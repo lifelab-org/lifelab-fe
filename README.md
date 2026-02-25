@@ -18,9 +18,9 @@ react + Vite  + TailwindCSS 기반 프로젝트
 - (후에) TypeScript
 
 # 브랜치 전략
-main → 배포 브랜치 (초기세팅 이후로 건들지 말것!!!)
-develop → 통합 개발 브랜치 
-feature/기능명 → 개인 작업 브랜치
+- main → 배포 브랜치 (초기세팅 이후로 건들지 말것!!!)
+- develop → 통합 개발 브랜치 
+- feature/기능명 → 개인 작업 브랜치
 
 
 ### 협업 규칙
