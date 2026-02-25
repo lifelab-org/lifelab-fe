@@ -1,16 +1,38 @@
-# React + Vite
+# LifeLab Frontend
+react + Vite  + TailwindCSS 기반 프로젝트
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 실행 방법
+1. 레포 클론
+   git clond <레포주소>
+2. 폴더 이동
+   cd lifelab-fe
+3. 의존성 설치
+   npm install
+4. 개발 서버 실행
+   npm run dev (표시되는 localhost 주소로 접속)
 
-Currently, two official plugins are available:
+# 기술 스택
+- react
+- Vite
+- TailwindCSS
+- (후에) TypeScript
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# 브랜치 전략
+main → 배포 브랜치
+develop → 통합 개발 브랜치 
+feature/기능명 → 개인 작업 브랜치
+** 되도록 develop에서 통합하되, 본인 feature브랜치에서 사세요.. **
 
-## React Compiler
+### 협업 규칙
+1. main 브랜치에 push 금지, develop에 직접 push 지양하기!
+2. PR로만 병합하기
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# 커밋 메세지 규칙
+| 타입       | 의미                |
+| -------- | ----------------- |
+| feat     | 기능 추가             |
+| fix      | 버그 수정             |
+| style    | 스타일 변경 (기능 변화 없음) |
+| refactor | 리팩토링              |
+| docs     | 문서 수정             |
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
