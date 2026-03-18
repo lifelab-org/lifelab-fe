@@ -1,0 +1,59 @@
+body {
+  margin: 0;
+}
+
+.onboarding-container {
+  position: relative;
+  height: 100vh;
+  background-color: white;
+}
+
+.center-area {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lifelab-logo {
+  width: 79px;
+  height: 99px;
+  margin-bottom: 12px;
+}
+
+.lifelab-char {
+  width: 173px;
+  height: 86px;
+}
+
+.login-button {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 85%;
+  max-width: 320px;
+  height: 50px;
+
+  background-color: #fee500;
+  border: none;
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* 카카오 아이콘 */
+.talk-icon {
+  width: 18px;
+}
