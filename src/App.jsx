@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Calendar from "./pages/Calendar";
 import Archive from "./pages/Archive";
 import DailyRecord from "./pages/DailyRecord";
+import RecordCondition from "./pages/RecordCondition";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         
         <Route element={<DetailLayout />}>
           <Route path="/record" element={<DailyRecord />} />
+          <Route path="/record/condition" element={<RecordCondition />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

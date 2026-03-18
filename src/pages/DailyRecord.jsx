@@ -10,23 +10,24 @@ export default function DailyRecord() {
   const [selected, setSelected] = useState(null);
 
   const handleNext = () => {
-    if (!selected) return;
+  if (!selected) return;
 
-    navigate("/record/result", {
+  if (selected === "성공") {
+    navigate("/record/condition", {
       state: { result: selected }
     });
-  };
+  }
+};
 
   return (
     <div className="relative min-h-screen bg-white p-6">
-      {/* 헤더 */}
+
       <header className="flex items-center mb-8">
         <button onClick={() => navigate(-1)} className="p-1 -ml-2">
           <ArrowLeft size={24} />
         </button>
       </header>
 
-      {/* 질문 */}
       <h2 className="text-2xl font-bold leading-tight mb-10">
         오늘의 실험은 <br />
         성공적이었나요?
