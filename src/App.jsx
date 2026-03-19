@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {
   BrowserRouter,
   Routes,
@@ -10,11 +11,22 @@ import Calendar from "./pages/Calendar";
 import Archive from "./pages/Archive";
 import BottomNav from "./components/BottomNav";
 import Onboarding from "./pages/onboarding/Onboarding";
+=======
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import MainLayout from "./layouts/MainLayout";
+import DetailLayout from "./layouts/DetailLayout";
+import Home from "./pages/Home";
+import Calendar from "./pages/Calendar";
+import Archive from "./pages/Archive";
+import DailyRecord from "./pages/DailyRecord";
+import RecordCondition from "./pages/RecordCondition";
+>>>>>>> feat/일일기록
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+<<<<<<< HEAD
         <Route path="/onboarding" element={<Onboarding />} />
 
         <Route
@@ -33,6 +45,18 @@ function App() {
             </div>
           }
         />
+=======
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/archive" element={<Archive />} />
+        </Route>
+        
+        <Route element={<DetailLayout />}>
+          <Route path="/record" element={<DailyRecord />} />
+          <Route path="/record/condition" element={<RecordCondition />}></Route>
+        </Route>
+>>>>>>> feat/일일기록
       </Routes>
     </BrowserRouter>
   );
