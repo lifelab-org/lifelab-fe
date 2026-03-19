@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Calendar from "./pages/Calendar";
 import Archive from "./pages/Archive";
 import BottomNav from "./components/BottomNav";
+import CreateExperiment from "./pages/CreateExperiment/CreateExperiment";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/archive" element={<Archive />} />
+            <Route path="/create" element={<CreateExperiment />} />
           </Routes>
         </main>
         
