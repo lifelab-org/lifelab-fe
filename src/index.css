@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 body {
-  background-color: #f3f4f6; 
+  background-color: #f3f4f6;
   margin: 0;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
