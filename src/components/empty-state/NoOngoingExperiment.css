@@ -1,15 +1,21 @@
 .Modalbox {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 35%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 337px;
   height: 232px;
+  background-color: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 16px;
+  z-index: 100;
 }
 
-.lifelab-logo {
+.modal-logo {
   width: 43px;
   height: 53.5px;
 }
@@ -24,6 +30,7 @@
 }
 .experiment-state {
   font-size: 16px;
+  margin-top: 14px;
 }
 
 .experiment-ready {
