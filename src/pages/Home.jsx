@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react"; // ✨ 상태 관리를 위해 추가
+import { useState, useEffect } from "react"; // 상태 관리를 위해 추가
 import { Link } from "react-router-dom";
 import Header from "../components/header/Header";
 import NoOngoingExperiment from "../components/empty-state/NoOngoingExperiment";
 
 export default function Home() {
+  console.log("Home 렌더됨");
   // 1. 실험 목록 상태 (초기값은 빈 상태로 유지함)
   const [experiments, setExperiments] = useState([]);
   // 2. 로딩 상태

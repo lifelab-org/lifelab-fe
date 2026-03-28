@@ -1,21 +1,32 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./Header.css";
 import logo from "../../assets/lifelab_char.png";
 
 export default function Header() {
+  const navigate = useNavigate();
+
   const [isOpen, setIsOpen] = useState(false);
 
-  const experiments = ["진행 예정 실험"];
+  const location = useLocation();
 
-  const [selected, setSelected] = useState("진행 중인 실험");
+  const selected =
+    location.pathname === "/upcoming" ? "진행 예정 실험" : "진행 중인 실험";
 
+  const experiments =
+    selected === "진행 예정 실험" ? ["진행 중인 실험"] : ["진행 예정 실험"];
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
   const handleSelect = (exp) => {
-    setSelected(exp);
     setIsOpen(false);
+
+    if (exp === "진행 예정 실험") {
+      navigate("/upcoming");
+    } else {
+      navigate("/");
+    }
   };
 
   return (
