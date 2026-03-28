@@ -12,6 +12,8 @@ import BottomNav from "./components/BottomNav";
 import Onboarding from "./pages/onboarding/Onboarding";
 import CreateExperiment from "./pages/CreateExperiment/CreateExperiment";
 import Created from "./pages/created/Created";
+import NoOngoingExperiment from "./components/empty-state/NoOngoingExperiment";
+import Upcoming from "./pages/upcoming/Upcoming";
 
 function App() {
   return (
@@ -25,11 +27,16 @@ function App() {
             <div className="max-w-md mx-auto min-h-[100dvh] bg-white relative shadow-xl overflow-hidden flex flex-col font-sans">
               <main className="flex-1 overflow-y-auto pb-[80px]">
                 <Routes>
-                  <Route path="/" element={<Home />} />
+                  <Route index element={<Home />} />
                   <Route path="/calendar" element={<Calendar />} />
                   <Route path="/archive" element={<Archive />} />
                   <Route path="/create" element={<CreateExperiment />} />
                   <Route path="/created" element={<Created />} />
+                  <Route
+                    path="/NoOngoingExperiment"
+                    element={<NoOngoingExperiment />}
+                  />
+                  <Route path="/upcoming" element={<Upcoming />} />
                 </Routes>
               </main>
 
