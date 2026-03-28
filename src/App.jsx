@@ -11,6 +11,7 @@ import Archive from "./pages/Archive";
 import BottomNav from "./components/BottomNav";
 import Onboarding from "./pages/onboarding/Onboarding";
 import CreateExperiment from "./pages/CreateExperiment/CreateExperiment";
+import Created from "./pages/created/Created";
 import NoOngoingExperiment from "./components/empty-state/NoOngoingExperiment";
 import Upcoming from "./pages/upcoming/Upcoming";
 
@@ -30,6 +31,7 @@ function App() {
                   <Route path="/calendar" element={<Calendar />} />
                   <Route path="/archive" element={<Archive />} />
                   <Route path="/create" element={<CreateExperiment />} />
+                  <Route path="/created" element={<Created />} />
                   <Route
                     path="/NoOngoingExperiment"
                     element={<NoOngoingExperiment />}
