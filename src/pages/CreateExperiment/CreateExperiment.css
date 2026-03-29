@@ -1,0 +1,302 @@
+.experiment-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  padding: 20px;
+}
+
+.experiment-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding-top: 16px;
+  padding-bottom: 36px;
+}
+
+.back-icon {
+  position: absolute;
+  left: 0px;
+}
+
+.header-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.input-section {
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.experiment-meta {
+  font-size: 20px;
+  font-weight: 700;
+  color: #131313;
+}
+
+.input-section input {
+  width: 100%;
+  height: 50px;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid #D9D9D9;
+  background-color: #ffffff;
+  color: #131313;
+  padding: 16px;
+  margin: 8px 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.experiment-duration {
+  display: flex;
+  align-items: center;
+}
+
+.date-box {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.date-box input {
+  padding-left: 55px;
+}
+
+.calendar-icon {
+  position: absolute;
+  left: 10px;
+  margin: 8px;
+  z-index: 1;
+}
+
+.date-minus-icon {
+  padding: 12px;
+  color: #D9D9D9;
+}
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  align-items: center;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.item-chip {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  align-items: center;
+  border: 0.76px solid #7F6EDB;
+  border-radius: 6.11px;
+  width: calc((100% - 28px) / 3);
+  height: 42px;
+  background-color: #ffffff;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.add-chip {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  align-items: center;
+  background-color: #F5F5F5;
+  border: 0.76px solid #929292;
+  border-radius: 6.11px;
+  width: calc((100% - 28px) / 3);
+  height: 42px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #5D5D5D;
+}
+
+.chip-input {
+  border: none !important;
+  background: transparent !important;
+  padding: 0px !important;
+  font-size: 14px !important;
+  outline: none;
+}
+
+.add-placeholder {
+  color: #5D5D5D;
+}
+
+.create-button {
+  background-color: #BDBDBD;
+  border-radius: 8px;
+  width: 100%;
+  height: 53px;
+  margin-top: 20px;
+  color: #ffffff;
+}
+
+.create-button.active {
+  background-color: #7F6EDB;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*.experiment-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 16px;
+  background-color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.experiment-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 24px;
+  padding: 10px 0;
+}
+
+.header-icon {
+  position: absolute;
+  left: 0;
+  cursor: pointer;
+}
+
+.header-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.input-section {
+  margin-bottom: 20px;
+}
+
+.input-section label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.input-section input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
+  background-color: #f8f8f8;
+  box-sizing: border-box;
+}
+
+.date-picker-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.date-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #555;
+}
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.item-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border: 1px solid #e0e0ff;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #444;
+}
+
+.minus-icon {
+  color: #888;
+  font-size: 10px;
+}
+
+.add-btn {
+  border: 1px solid #ddd;
+  color: #999;
+  cursor: pointer;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: #e0e0e0;
+  color: #ffffff;
+}
+
+.submit-button.active {
+  background-color: #8371f5;
+}
+
+.bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0;
+  background: white;
+  border-top: 1px solid #eee;
+}
+
+.nav-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: #aaa;
+  font-size: 12px;
+}
+
+.nav-tab.active {
+  color: #333;
+}*/
