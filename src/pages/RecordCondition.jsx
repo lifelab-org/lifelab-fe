@@ -47,10 +47,13 @@ export default function RecordCondition() {
   };
 
   const handleConfirm = () => {
-    // TODO: 서버 저장 or 다음 페이지 이동
-    navigate("/"); // 예시
-  };
-
+  navigate("/record/success", {
+    state: {
+      result,
+      ratings
+    }
+  });
+};
   return (
     <div className="flex flex-col h-screen bg-white max-w-md mx-auto relative">
 
