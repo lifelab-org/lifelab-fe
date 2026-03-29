@@ -7,6 +7,7 @@ import Archive from "./pages/Archive";
 import DailyRecord from "./pages/DailyRecord";
 import RecordCondition from "./pages/RecordCondition";
 import Onboarding from "./pages/onboarding/Onboarding";
+import RecordSuccess from "./pages/RecordSuccess";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route element={<DetailLayout />}>
           <Route path="/record" element={<DailyRecord />} />
           <Route path="/record/condition" element={<RecordCondition />}></Route>
+          <Route path="/record/success" element={<RecordSuccess/>}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

@@ -28,7 +28,7 @@ export default function DailyRecord() {
         </button>
       </header>
 
-      <h2 className="text-2xl font-bold leading-tight mb-10">
+      <h2 className="text-2xl font-semibold leading-tight mb-10">
         오늘의 실험은 <br />
         성공적이었나요?
       </h2>
