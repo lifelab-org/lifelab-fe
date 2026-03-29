@@ -9,6 +9,7 @@ import RecordCondition from "./pages/RecordCondition";
 import Onboarding from "./pages/onboarding/Onboarding";
 import RecordSuccess from "./pages/RecordSuccess";
 import RecordExitChoice from "./pages/RecordExitChoice";
+import RecordFailReason from "./pages/RecordFailReason";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/record/condition" element={<RecordCondition />}></Route>
           <Route path="/record/success" element={<RecordSuccess/>}></Route>
           <Route path="/record/exitchoice" element={<RecordExitChoice/>}></Route>
+          <Route path="/record/failreason" element={<RecordFailReason/>}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

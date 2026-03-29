@@ -2,16 +2,15 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 
-export default function RecordExitChoice() {
+export default function RecordFailReason() {
   const navigate = useNavigate();
 
-  const options = ["그래도 내 상태 기록하기","오늘은 넘기기"];
+  const options = ["너무 피곤함","의욕이 없었음", "일정 때문에 어려웠음","스트레스가 심했음", "그냥"];
 
   const [selected, setSelected] = useState(null);
 
   const handleNext = () => {
   if (!selected) return;
-  navigate("/record/failreason", {state: {result: selected}})
 };
 
   return (
@@ -24,8 +23,8 @@ export default function RecordExitChoice() {
       </header>
 
       <h2 className="text-2xl font-bold leading-tight mb-10">
-        오늘 기록은 <br />
-        여기까지 할까요?
+        오늘의 실험이 실패한 <br />
+        이유를 알려 주세요
       </h2>
 
 
