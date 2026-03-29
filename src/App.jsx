@@ -5,9 +5,9 @@ import {
   Link,
   useLocation,
 } from "react-router-dom";
-import Home from "./pages/Home";
+import Home from "./pages/home/Home";
 import Calendar from "./pages/Calendar";
-import Archive from "./pages/Archive";
+import Archive from "./pages/archive/Archive";
 import BottomNav from "./components/BottomNav";
 import Onboarding from "./pages/onboarding/Onboarding";
 import CreateExperiment from "./pages/CreateExperiment/CreateExperiment";

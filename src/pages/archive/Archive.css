@@ -1,0 +1,48 @@
+.archive-title {
+  font-size: 20px;
+  font-weight: 450;
+  margin: 18px;
+  text-align: center;
+}
+
+.experiment-list {
+  font-size: 16px;
+  margin-left: 20px;
+}
+
+.line {
+  margin-top: 8px;
+  width: 95%;
+}
+
+.archive-title {
+  font-size: 20px;
+  font-weight: 450;
+  margin: 18px;
+  text-align: center;
+}
+
+.experiment-list {
+  font-size: 16px;
+  margin-left: 20px;
+}
+
+.line {
+  margin-top: 8px;
+  width: 95%;
+}
+
+.empty {
+  font-size: 24px;
+  font-weight: 500;
+  text-align: center;
+
+  margin-top: 160px; /* 👈 적당히 조절 */
+}
+
+.home-navigate {
+  text-align: center;
+  font-size: 16px;
+  color: #929292;
+  margin-top: 130px;
+}
