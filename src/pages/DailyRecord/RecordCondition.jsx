@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import RecodeCheck from "../components/RecodeCheck";
+import RecodeCheck from "../../components/RecodeCheck";
 
 export default function RecordCondition() {
   const location = useLocation();

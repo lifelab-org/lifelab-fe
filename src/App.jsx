@@ -5,16 +5,22 @@ import {
   Link,
   useLocation,
 } from "react-router-dom";
+
+import MainLayout from "./layouts/MainLayout";
+import DetailLayout from "./layouts/DetailLayout"
+
 import Home from "./pages/home/Home";
 import Calendar from "./pages/Calendar";
 import Archive from "./pages/archive/Archive";
 import BottomNav from "./components/BottomNav";
 import Onboarding from "./pages/onboarding/Onboarding";
 
-import RecordSuccess from "./pages/RecordSuccess";
-import RecordExitChoice from "./pages/RecordExitChoice";
-import RecordFailReason from "./pages/RecordFailReason";
-import RecordExit from "./pages/RecordExit";
+import DailyRecord from "./pages/DailyRecord/DailyRecord";
+import RecordCondition from "./pages/DailyRecord/RecordCondition";
+import RecordSuccess from "./pages/DailyRecord/RecordSuccess";
+import RecordExitChoice from "./pages/DailyRecord/RecordExitChoice";
+import RecordFailReason from "./pages/DailyRecord/RecordFailReason";
+import RecordExit from "./pages/DailyRecord/RecordExit";
 
 
 import CreateExperiment from "./pages/CreateExperiment/CreateExperiment";
