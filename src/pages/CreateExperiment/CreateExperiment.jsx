@@ -25,6 +25,42 @@ const CreateExperiment = () => {
       setItems(newItems);
     }
 
+    const formatDate = (date) => {
+      return date.toLocaleDateString('sv-SE'); // yyyy-mm-dd (UTC 기준 말고 로컬기준으로 함)
+    };
+
+    const handleCreate = async () => {
+  try {
+    const response = await fetch('https://life-lab.shop/api/experiments', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        title,
+        startDate: formatDate(startDate),
+        endDate: formatDate(endDate),
+        rule,
+        recordItems: items.map(item => ({ name: item }))
+      })
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+    if (response.status === 201) {
+      alert('실험 생성 성공!');
+    } else {
+      alert(data?.error?.message || '에러 발생');
+    }
+
+  } catch (error) {
+    console.error(error);
+    alert('서버 연결 실패');
+  }
+};
+
     return (
         <div className="experiment-container">
             {/* 헤더 */}
@@ -94,7 +130,7 @@ const CreateExperiment = () => {
             </main>
 
             <footer>
-                <button className={`create-button ${ isReady ? 'active' : ''}`} disabled={!isReady}>
+                <button className={`create-button ${ isReady ? 'active' : ''}`} disabled={!isReady} onClick={handleCreate}>
                   생성하기</button>
             </footer>
 
