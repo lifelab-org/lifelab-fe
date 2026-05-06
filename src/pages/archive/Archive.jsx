@@ -52,7 +52,7 @@ function Archive() {
             </div>
 
             <div className="home-navigate" onClick={handleStart}>
-              홈으로 가기
+              홈으로 이동하기
             </div>
           </div>
         )}
