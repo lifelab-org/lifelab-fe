@@ -25,6 +25,7 @@ import RecordExit from "./pages/DailyRecord/RecordExit";
 import CreateExperiment from "./pages/CreateExperiment/CreateExperiment";
 import Created from "./pages/created/Created";
 import CreatePrerecordAlert from "./pages/CreatePrerecordAlert/CreatePrerecordAlert";
+import Prerecord from "./pages/Prerecord/Prerecord";
 import NoOngoingExperiment from "./components/empty-state/NoOngoingExperiment";
 import Upcoming from "./pages/upcoming/Upcoming";
 import ExperimentDetail from "./pages/experiment-detail/ExperimentDetail";
@@ -45,16 +46,11 @@ function App() {
                     <Route index element={<Home />} />
                     <Route path="calendar" element={<Calendar />} />
                     <Route path="archive" element={<Archive />} />
-                    <Route path="create" element={<CreateExperiment />} />
+                    <Route path="createExperiment" element={<CreateExperiment />} />
                     <Route path="created" element={<Created />} />
-                    <Route
-                      path="createPrerecordAlert"
-                      element={<CreatePrerecordAlert />}
-                    />
-                    <Route
-                      path="NoOngoingExperiment"
-                      element={<NoOngoingExperiment />}
-                    />
+                    <Route path="createPrerecordAlert" element={<CreatePrerecordAlert />} />
+                    <Route path="prerecord" element={<Prerecord />} />
+                    <Route path="NoOngoingExperiment" element={<NoOngoingExperiment />} />
                     <Route path="upcoming" element={<Upcoming />} />
                     <Route
                       path="experimentdetail"
