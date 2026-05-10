@@ -28,6 +28,8 @@ import CreatePrerecordAlert from "./pages/CreatePrerecordAlert/CreatePrerecordAl
 import NoOngoingExperiment from "./components/empty-state/NoOngoingExperiment";
 import Upcoming from "./pages/upcoming/Upcoming";
 import ExperimentDetail from "./pages/experiment-detail/ExperimentDetail";
+import ArchiveDetail from "./pages/archivedetail/ArchiveDetail";
+import ExperimentReport from "./pages/experiment-report/ExperimentReport";
 
 function App() {
   return (
@@ -60,6 +62,11 @@ function App() {
                       path="experimentdetail"
                       element={<ExperimentDetail />}
                     />
+
+                    <Route
+                      path="experimentreport"
+                      element={<ExperimentReport />}
+                    />
                   </Route>
 
                   <Route element={<DetailLayout />}>
@@ -78,6 +85,10 @@ function App() {
                       element={<RecordFailReason />}
                     />
                     <Route path="record/exit" element={<RecordExit />} />
+                    <Route
+                      path="archivedetail"
+                      element={<ArchiveDetail />}
+                    ></Route>
                   </Route>
                 </Routes>
               </main>

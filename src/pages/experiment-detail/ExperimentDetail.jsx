@@ -9,7 +9,6 @@ import DeleteCompleteModal from "../../components/deletecompletemodal/DeleteComp
 function ExperimentDetail() {
   const navigate = useNavigate();
 
-  // 테스트용 데이터
   const dummyData = [
     { id: 1, content: "2026년 1월 1일~1월 30일(총 30일)" },
     { id: 2, content: "D-8" },
@@ -19,17 +18,14 @@ function ExperimentDetail() {
 
   const [isClicked, setIsClicked] = useState(false);
 
-  // 모달 상태 관리
   const [isOpen, setIsOpen] = useState(false); // 삭제 확인 모달
   const [isCompleteOpen, setIsCompleteOpen] = useState(false); // 삭제 완료 모달
 
-  // 삭제 확인 창에서 '삭제' 버튼 눌렀을 때
   const handleDelete = () => {
     setIsOpen(false); // 확인 모달 닫기
     setIsCompleteOpen(true); // 완료 모달 열기
   };
 
-  // 완료 창에서 '홈으로' 버튼 눌렀을 때
   const goHome = () => {
     setIsCompleteOpen(false);
     navigate("/"); // 홈으로 이동
@@ -95,14 +91,12 @@ function ExperimentDetail() {
 
       {/* --- 모달 영역 --- */}
 
-      {/* 1. 삭제 여부 묻는 모달 */}
       <DeleteModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         onDelete={handleDelete}
       />
 
-      {/* 2. 삭제 완료 알려주는 모달 */}
       <DeleteCompleteModal isOpen={isCompleteOpen} onHome={goHome} />
     </div>
   );
