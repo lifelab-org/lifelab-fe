@@ -1,0 +1,7 @@
+export default function Upcoming() {
+  return (
+    <div className="p-6 text-xl">
+      진행 예정 실험 페이지
+    </div>
+  );
+}
