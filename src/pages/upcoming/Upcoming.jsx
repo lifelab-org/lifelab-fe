@@ -37,7 +37,7 @@ function Upcoming() {
     <div>
       <Header />
 
-      <div className>
+      <div className="content">
         {data.map((item) => (
           <div key={item.id}>{item.title}</div>
         ))}
