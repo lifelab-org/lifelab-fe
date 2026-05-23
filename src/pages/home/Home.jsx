@@ -38,7 +38,6 @@ export default function Home() {
               <Link
                 key={exp.id}
                 to="/record"
-                state={{ experimentId: exp.id }}
                 className={`experiment-card ${exp.id === 1 ? "highlight" : ""}`}
               >
                 <h3 className="experiment-title">{exp.title}</h3>

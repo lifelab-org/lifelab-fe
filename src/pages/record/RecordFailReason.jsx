@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function RecordFailReason() {
     const location = useLocation();
-    const { result, experimentId } = location.state ?? {};
+    const result = location.state?.result;
 
     const navigate = useNavigate();
 
@@ -12,19 +12,23 @@ export default function RecordFailReason() {
 
     const [selected, setSelected] = useState(null);
 
-    const handleNext = () => {
-      if (!selected) return;
+   const handleNext = () => {
+  if (!selected) return;
 
-      if (result === "그래도 내 상태 기록하기") {
-        navigate("/record/condition", {
-          state: { result: "실패", reason: selected, experimentId },
-        });
-      } else {
-        navigate("/record/exit", {
-          state: { reason: selected, experimentId },
-        });
-      }
-    };
+  if (result === "그래도 내 상태 기록하기") {
+    navigate("/record/condition", {
+      state: {
+        reason: selected,
+      },
+    });
+  } else {
+    navigate("/record/exit", {
+      state: {
+        reason: selected,
+      },
+    });
+  }
+};
 
     return (
         <div className="relative min-h-screen bg-white p-6">

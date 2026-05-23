@@ -17,12 +17,12 @@ import Archive from "./pages/archive/Archive";
 import BottomNav from "./components/BottomNav";
 import Onboarding from "./pages/onboarding/Onboarding";
 
-import RecordSuccess from "./pages/record/RecordSuccess";
-import DailyRecord from "./pages/record/DailyRecord";
-import RecordExitChoice from "./pages/record/RecordExitChoice";
-import RecordFailReason from "./pages/record/RecordFailReason";
-import RecordExit from "./pages/record/RecordExit";
-import RecordCondition from "./pages/record/RecordCondition";
+import RecordSuccess from "./pages/RecordSuccess";
+import DailyRecord from "./pages/DailyRecord";
+import RecordExitChoice from "./pages/RecordExitChoice";
+import RecordFailReason from "./pages/RecordFailReason";
+import RecordExit from "./pages/RecordExit";
+import RecordCondition from "./pages/RecordCondition";
 
 import DailyRecord from "./pages/DailyRecord/DailyRecord";
 import RecordCondition from "./pages/DailyRecord/RecordCondition";
