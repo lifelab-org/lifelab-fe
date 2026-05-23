@@ -10,10 +10,19 @@ import MainLayout from "./layouts/MainLayout";
 import DetailLayout from "./layouts/DetailLayout";
 
 import Home from "./pages/home/Home";
+import MainLayout from "./layouts/MainLayout"
+import DetailLayout from "./layouts/DetailLayout";
 import Calendar from "./pages/Calendar";
 import Archive from "./pages/archive/Archive";
 import BottomNav from "./components/BottomNav";
 import Onboarding from "./pages/onboarding/Onboarding";
+
+import RecordSuccess from "./pages/RecordSuccess";
+import DailyRecord from "./pages/DailyRecord";
+import RecordExitChoice from "./pages/RecordExitChoice";
+import RecordFailReason from "./pages/RecordFailReason";
+import RecordExit from "./pages/RecordExit";
+import RecordCondition from "./pages/RecordCondition";
 
 import DailyRecord from "./pages/DailyRecord/DailyRecord";
 import RecordCondition from "./pages/DailyRecord/RecordCondition";
@@ -41,7 +50,7 @@ function App() {
         <Route
           path="/*"
           element={
-            <div className="max-w-md mx-auto min-h-[100dvh] bg-white relative shadow-xl overflow-hidden flex flex-col font-sans">
+            <div className="max-w-md mx-auto h-[100dvh] bg-white relative shadow-xl overflow-hidden flex flex-col font-sans">
               <main className="flex-1 overflow-y-auto">
                 <Routes>
                   <Route element={<MainLayout />}>
