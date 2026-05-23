@@ -1,27 +1,30 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 
 export default function DailyRecord() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const options = ["성공","실패"];
 
   const [selected, setSelected] = useState(null);
 
-  const handleNext = () => {
-  if (!selected) return;
+  const experimentId = location.state?.experimentId;
 
-  if (selected === "성공") {
-    navigate("/record/condition", {
-      state: { result: selected },
-    });
-  } else {
-    navigate("/record/exitchoice", {
-      state: { result: selected },
-    });
-  }
-};
+  const handleNext = () => {
+    if (!selected) return;
+
+    if (selected === "성공") {
+      navigate("/record/condition", {
+        state: { result: selected, experimentId },
+      });
+    } else {
+      navigate("/record/exitchoice", {
+        state: { result: selected, experimentId },
+      });
+    }
+  };
 
   return (
     <div className="relative min-h-screen bg-white p-6">

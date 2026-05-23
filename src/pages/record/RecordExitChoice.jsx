@@ -1,18 +1,20 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 
 export default function RecordExitChoice() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { experimentId } = location.state ?? {};
 
-  const options = ["그래도 내 상태 기록하기","오늘은 넘기기"];
+  const options = ["그래도 내 상태 기록하기", "오늘은 넘기기"];
 
   const [selected, setSelected] = useState(null);
 
   const handleNext = () => {
-  if (!selected) return;
-  navigate("/record/failreason", {state: {result: selected}})
-};
+    if (!selected) return;
+    navigate("/record/failreason", { state: { result: selected, experimentId } });
+  };
 
   return (
     <div className="relative min-h-screen bg-white p-6">

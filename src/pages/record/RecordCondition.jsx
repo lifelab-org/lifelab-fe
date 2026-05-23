@@ -1,29 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import RecodeCheck from "../components/RecodeCheck";
+import { fetchRecordItems } from "../../api/record";
+
 
 export default function RecordCondition() {
   const location = useLocation();
   const navigate = useNavigate();
-  const result = location.state?.result;
+  const { result, experimentId, reason } = location.state ?? {};
 
-  const [ratings, setRatings] = useState({
-    fatigue: null,
-    concentration: null,
-    mood: null,
-    digestion: null,
-    sleep: null,
-  });
+  const [items, setItems] = useState([]);
+  const [ratings, setRatings] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // 설문 항목 데이터... 일단 더미데이터
-  const categories = [
-    { id: 'fatigue', label: '피로도' },
-    { id: 'concentration', label: '집중력' },
-    { id: 'mood', label: '기분' },
-    { id: 'digestion', label: '소화 상태' },
-    { id: 'sleep', label: '수면 만족도' },
-  ];
+  useEffect(() => {
+    if (!experimentId) return;
+    fetchRecordItems(experimentId)
+      .then((values) => {
+        setItems(values);
+        const initial = {};
+        values.forEach(({ recordItemKey }) => { initial[recordItemKey] = null; });
+        setRatings(initial);
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, [experimentId]);
 
   // 점수 클릭 핸들러
   const handleRating = (categoryId, value) => {
@@ -47,13 +49,27 @@ export default function RecordCondition() {
   };
 
   const handleConfirm = () => {
-  navigate("/record/success", {
-    state: {
-      result,
-      ratings
-    }
-  });
-};
+    navigate("/record/success", {
+      state: { result, experimentId, reason, ratings },
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p className="text-gray-400">불러오는 중...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex h-screen items-center justify-center px-6 text-center">
+        <p className="text-red-400">{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col h-screen bg-white max-w-md mx-auto relative">
 
@@ -70,24 +86,23 @@ export default function RecordCondition() {
         </h2>
       </div>
 
-
       <main className="flex-1 overflow-y-auto px-6">
-        {categories.map((category) => (
-          <div key={category.id} className="bg-[#F5F5F5] rounded-[10px] p-4 mb-4">
+        {items.map(({ recordItemKey }) => (
+          <div key={recordItemKey} className="bg-[#F5F5F5] rounded-[10px] p-4 mb-4">
             <h2 className="text-[16px] font-semibold text-black mb-3">
-              {category.label}
+              {recordItemKey}
             </h2>
             <div className="flex justify-between items-center gap-1">
               {[1, 2, 3, 4, 5, 6, 7].map((num) => {
-                const isSelected = ratings[category.id] === num;
+                const isSelected = ratings[recordItemKey] === num;
                 return (
                   <button
                     key={num}
-                    onClick={() => handleRating(category.id, num)}
-                    className={`w-[44px] h-[30px] flex items-center justify-center rounded-[8px] text-sm 
+                    onClick={() => handleRating(recordItemKey, num)}
+                    className={`w-[44px] h-[30px] flex items-center justify-center rounded-[8px] text-sm
                       ${isSelected
                         ? 'bg-[#7F6EDB] text-white border-[#7F6EDB]'
-                        : 'bg-white text-black border border-[#7F6EDB] 0 hover:border--[#7F6EDB]'
+                        : 'bg-white text-black border border-[#7F6EDB] hover:border-[#7F6EDB]'
                       }`}
                   >
                     {num}
@@ -105,7 +120,7 @@ export default function RecordCondition() {
           disabled={!isAllAnswered}
           className={`w-full py-4 rounded-xl text-lg font-semibold
             ${isAllAnswered
-              ? 'bg-[#7F6EDB] text-white '
+              ? 'bg-[#7F6EDB] text-white'
               : 'bg-gray-300 text-white cursor-not-allowed'
             }`}
         >
