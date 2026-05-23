@@ -10,26 +10,17 @@ import MainLayout from "./layouts/MainLayout";
 import DetailLayout from "./layouts/DetailLayout";
 
 import Home from "./pages/home/Home";
-import MainLayout from "./layouts/MainLayout"
-import DetailLayout from "./layouts/DetailLayout";
 import Calendar from "./pages/Calendar";
 import Archive from "./pages/archive/Archive";
 import BottomNav from "./components/BottomNav";
 import Onboarding from "./pages/onboarding/Onboarding";
 
-import RecordSuccess from "./pages/RecordSuccess";
-import DailyRecord from "./pages/DailyRecord";
-import RecordExitChoice from "./pages/RecordExitChoice";
-import RecordFailReason from "./pages/RecordFailReason";
-import RecordExit from "./pages/RecordExit";
-import RecordCondition from "./pages/RecordCondition";
-
-import DailyRecord from "./pages/DailyRecord/DailyRecord";
-import RecordCondition from "./pages/DailyRecord/RecordCondition";
-import RecordSuccess from "./pages/DailyRecord/RecordSuccess";
-import RecordExitChoice from "./pages/DailyRecord/RecordExitChoice";
-import RecordFailReason from "./pages/DailyRecord/RecordFailReason";
-import RecordExit from "./pages/DailyRecord/RecordExit";
+import RecordSuccess from "./pages/record/RecordSuccess";
+import DailyRecord from "./pages/record/DailyRecord";
+import RecordExitChoice from "./pages/record/RecordExitChoice";
+import RecordFailReason from "./pages/record/RecordFailReason";
+import RecordExit from "./pages/record/RecordExit";
+import RecordCondition from "./pages/record/RecordCondition";
 
 import CreateExperiment from "./pages/CreateExperiment/CreateExperiment";
 import Created from "./pages/created/Created";
@@ -40,7 +31,6 @@ import Upcoming from "./pages/upcoming/Upcoming";
 import ExperimentDetail from "./pages/experiment-detail/ExperimentDetail";
 import ArchiveDetail from "./pages/archivedetail/ArchiveDetail";
 import ExperimentReport from "./pages/experiment-report/ExperimentReport";
-
 function App() {
   return (
     <BrowserRouter>
