@@ -1,40 +1,26 @@
-import { useEffect, useRef } from "react"; // 1. useRef 추가!
-import { useNavigate, useSearchParams } from "react-router-dom"; // 2. useSearchParams 추가!
-import Api from "../../api/Api";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Api from "../../api/Api"; // 🚨 은우님 원래 폴더 구조에 맞춘 경로구랴!
 
 function KakaoCallback() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const hasCalled = useRef(false); // 🔥 1초에 수백 번 찌르는 루프를 물리적으로 막는 방어막!
 
   useEffect(() => {
-    // 이미 백엔드에 요청을 보냈다면 두 번 다시 실행 안 하고 리턴 (중복 호출 원천 차단!)
-    if (hasCalled.current) return;
+    // 백엔드 오피셜 명세서 주소 '/auth/me'로 쿠키(credentials) 실어서 전송!
+    Api.get("/auth/me")
+      .then((res) => {
+        // 백엔드가 쿠키 확인 완료하고 200 오피셜 성공 응답을 주면
+        console.log("백엔드가 쿠키 확인 완료함! 로그인 대성공!! 🎉", res.data);
 
-    // 주소창 뒤에 붙어오는 ?code=... 에서 인가 코드를 뜯어냅니다.
-    const code = searchParams.get("code");
-
-    if (code) {
-      hasCalled.current = true; // 요청 출발하기 직전에 자물쇠 딱 걸기!
-      console.log(
-        "카카오 인가코드 발견! 백엔드에 최종 토큰 교환 요청을 날립니다. 🚀",
-      );
-
-      // 백엔드가 하라고 한대로 withCredentials가 켜진 Api 그릇으로 최종 인증 요청!
-      Api.get(`/auth/kakao/callback?code=${code}`)
-        .then(() => {
-          console.log(
-            "백엔드가 브라우저에 쿠키 굽기 성공 완료! 이제 안심하고 홈으로 이동하긔! 🎉",
-          );
-          navigate("/", { replace: true }); // 성공하면 홈 화면으로 무사 입성!
-        })
-        .catch((err) => {
-          console.error("토큰 교환 중 에러 발생 😭:", err);
-          // 에러 나면 무한 루프 돌지 않게 로그인 창으로 안전하게 퇴장
-          navigate("/onboarding", { replace: true });
-        });
-    }
-  }, [searchParams, navigate]);
+        // 무한 루프 안 돌고 안전하게 대문(메인 홈) 화면으로 이동!
+        navigate("/", { replace: true });
+      })
+      .catch((err) => {
+        // 쿠키가 없거나 만료(401 등)되어 에러가 나면 온보딩으로 이동
+        console.error("인증 실패 또는 토큰 유실:", err);
+        navigate("/onboarding", { replace: true });
+      });
+  }, [navigate]);
 
   return (
     <div
@@ -43,15 +29,12 @@ function KakaoCallback() {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        backgroundColor: "#f9f9f9",
+        backgroundColor: "#fff",
       }}
     >
-      <div style={{ textAlign: "center" }}>
-        <h2 style={{ color: "#333", marginBottom: "10px" }}>
-          카카오 로그인 완료!
-        </h2>
-        <p style={{ color: "#777" }}>잠시 후 메인 화면으로 이동합니다. ⏳</p>
-      </div>
+      <h2 style={{ color: "#333" }}>
+        카카오 로그인 완료 후 상태 확인 중... 🚀
+      </h2>
     </div>
   );
 }

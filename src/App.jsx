@@ -15,7 +15,7 @@ import Calendar from "./pages/Calendar";
 import Archive from "./pages/archive/Archive";
 import BottomNav from "./components/BottomNav";
 import Onboarding from "./pages/onboarding/Onboarding";
-import KakaoCallback from "./pages/callback/KakaoCallback"; //콜백 배포에서도 되는지 확인해야도미 제발
+import KakaoCallback from "./pages/callback/KakaoCallback";
 
 import RecordSuccess from "./pages/record/RecordSuccess";
 import DailyRecord from "./pages/record/DailyRecord";
@@ -41,8 +41,7 @@ function App() {
         {/* 온보딩 페이지 (독립된 페이지) */}
         <Route path="/onboarding" element={<Onboarding />} />
 
-        {/* 카카오 대기방 콜백 라우터 (독립된 페이지) */}
-        <Route path="/auth/kakao/callback" element={<KakaoCallback />} />
+        <Route path="/api/auth/kakao/callback" element={<KakaoCallback />} />
 
         <Route
           path="/*"
