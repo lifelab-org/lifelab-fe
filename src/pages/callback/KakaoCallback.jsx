@@ -1,16 +1,18 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function KakaoCallback() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 백엔드가 이미 쿠키에 토큰을 심어줬고, 인가 코드도 지들이 처리했으니
-    // 프론트는 아무것도 묻지도 따지지도 말고 바로 홈 화면으로 유저를 들여보냅니다!
-    console.log("백엔드가 쿠키 심어준 거 확인! 홈 화면으로 워프합니다. 🚀");
+    // 백엔드가 이미 유저 브라우저 쿠키에 access_token을 심어준 상태이긔!
+    // 프론트는 주소창 뜯지 말고, 바로 메인 홈 화면으로 유저를 들여보냅니다.
+    console.log(
+      "백엔드 오피셜 쿠키 방식 확인! 홈 화면으로 무사 워프합니다. 🚀",
+    );
 
-    // 메인 홈 화면 주소로 이동 (프로젝트 메인 경로가 '/' 가 아니라 '/home' 이면 그걸로 적으셔긔!)
-    navigate("/");
+    // 메인 홈 화면 주소로 이동 (replace: true로 뒤로가기 방지!)
+    navigate("/", { replace: true });
   }, [navigate]);
 
   return (
