@@ -25,8 +25,9 @@ export default function Home() {
         const res = await axios.get(
           "https://life-lab.shop/api/experiments/ongoing",
           {
+            withCredentials: true, //[핵심] 쿠키를 주고받으려면 이 한 줄이 무조건 있어야 하긔!
             headers: {
-              Authorization: `Bearer ${token}`, // 헤더에 토큰 실어서 보내기
+              Authorization: `Bearer ${token}`, // 혹시 헤더 토큰도 같이 쓰면 유지!
             },
           },
         );
