@@ -3,17 +3,53 @@ import { Link } from "react-router-dom";
 import Header from "../../components/header/Header";
 import NoOngoingExperiment from "../../components/empty-state/NoOngoingExperiment";
 import "./Home.css";
+import axios from "axios";
 
 export default function Home() {
   const [experiments, setExperiments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const fetchExperiments = async () => {
       try {
+        // 1. 브라우저 저장소(localStorage)에서 토큰을 꺼내옵니다.
+        // (로그인이 완료되었거나 개발자 도구로 수동 주입한 토큰을 읽어옴)
+        const token = localStorage.getItem("accessToken");
+
+        // 만약 토큰이 없다면 에러를 띄우거나 로그인 페이지로 보낼 수 있도록 예외 처리
+        if (!token) {
+          console.warn("로그인 토큰이 존재하지 않습니다.");
+          // 필요시 여기에 로그인 페이지 리다이렉트 코드를 넣을 수 있긔!
+        }
+
+        // 2. 백엔드 API 서버에 진짜 데이터 요청하기
+        const res = await axios.get(
+          "https://life-lab.shop/api/experiments/ongoing",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // 헤더에 토큰 실어서 보내기
+            },
+          },
+        );
+
+        console.log("전체 응답:", res);
+        console.log("응답 데이터:", res.data);
+
+        // 3. 받아온 응답에서 데이터 가공 후 상태에 저장하기
+        const data = res.data.data;
+
+        if (Array.isArray(data)) {
+          setExperiments(data); // 배열이 맞으면 그대로 세팅!
+        } else {
+          console.log("data가 배열이 아님:", data);
+          setExperiments([]); // 배열이 아니면 빈 배열로 안전하게 예외처리
+        }
+
         setIsLoading(false);
       } catch (error) {
         console.error("데이터 로드 실패:", error);
+        setErrorMessage(error.message);
         setIsLoading(false);
       }
     };
@@ -21,7 +57,16 @@ export default function Home() {
     fetchExperiments();
   }, []);
 
-  if (isLoading) return null;
+  if (isLoading)
+    return (
+      <div style={{ padding: "20px", textAlign: "center" }}>로딩중...</div>
+    );
+  if (errorMessage)
+    return (
+      <div style={{ color: "red", padding: "20px" }}>
+        에러 발생: {errorMessage}
+      </div>
+    );
 
   return (
     <div className="home-container">
