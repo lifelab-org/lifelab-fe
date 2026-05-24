@@ -13,8 +13,6 @@ export default function Home() {
   useEffect(() => {
     const fetchExperiments = async () => {
       try {
-        // 1. 브라우저 저장소(localStorage)에서 토큰을 꺼내옵니다.
-        // (로그인이 완료되었거나 개발자 도구로 수동 주입한 토큰을 읽어옴)
         const token = localStorage.getItem("accessToken");
 
         // 만약 토큰이 없다면 에러를 띄우거나 로그인 페이지로 보낼 수 있도록 예외 처리
