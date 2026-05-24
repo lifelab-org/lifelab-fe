@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/header/Header";
 import NoOngoingExperiment from "../../components/empty-state/NoOngoingExperiment";
 import "./Home.css";
 import axios from "axios";
 
 export default function Home() {
+  const navigate = useNavigate();
   const [experiments, setExperiments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
@@ -13,66 +14,48 @@ export default function Home() {
   useEffect(() => {
     const fetchExperiments = async () => {
       try {
-        // 1. [핵심 리다이렉트 연동] 주소창(URL) 파라미터에 토큰이 실려왔는지 검사합니다.
-        const urlParams = new URLSearchParams(window.location.search);
-
-        // 백엔드가 주소창 뒤에 'token' 또는 'accessToken' 중 어떤 이름으로 보내든 둘 다 잡아내도록 세팅!
-        const urlToken = urlParams.get("token") || urlParams.get("accessToken");
-
-        // 만약 주소창에 토큰이 있다면, 로컬스토리지에 저장하고 주소창을 깔끔하게 정리합니다.
-        if (urlToken) {
-          localStorage.setItem("accessToken", urlToken);
-          // 주소창 뒤의 ?token=... 복잡한 파라미터를 밀어버리고 깔끔한 원래 주소("/")로 바꿉니다.
-          window.history.replaceState(
-            {},
-            document.title,
-            window.location.pathname,
-          );
-        }
-
-        // 2. 로컬스토리지에서 안전하게 저장된 토큰을 꺼내옵니다.
+        // 1. 콜백 대기방이 안전하게 저장해 둔 토큰을 로컬스토리지에서 꺼내옵니다.
         const token = localStorage.getItem("accessToken");
 
-        // 만약 토큰이 없다면 로그인이 안 된 것이므로 로그인 경고를 띄웁니다.
+        // 만약 토큰이 없으면 로그인이 안 된 사용자이므로 안전하게 온보딩으로 튕겨줍니다.
         if (!token) {
-          console.warn(
-            "로그인 토큰이 존재하지 않습니다. 온보딩 페이지로 이동이 필요할 수 있습니다.",
-          );
+          console.warn("인증 토큰 없음. 온보딩 페이지로 유도합니다.");
+          navigate("/onboarding");
+          return;
         }
 
-        // 3. 백엔드 API 서버에 데이터 요청하기 (쿠키를 안 쓰므로 크로스 도메인 403 차단 에러 해결!)
+        // 2. 백엔드 API 서버에 데이터 요청 (헤더에 Bearer 토큰 탑재)
         const res = await axios.get(
           "https://life-lab.shop/api/experiments/ongoing",
           {
             headers: {
-              Authorization: `Bearer ${token}`, // 명세서대로 발급받은 토큰을 헤더에 실어서 전송!
+              Authorization: `Bearer ${token}`, // 명세서대로 헤더 스펙 주입!
             },
           },
         );
 
-        console.log("전체 응답:", res);
-        console.log("응답 데이터:", res.data);
+        console.log("진행 중인 실험 목록 전체 응답:", res.data);
 
-        // 4. 받아온 응답에서 데이터 가공 후 상태에 저장하기
+        // 3. 응답받은 가공 데이터 상태에 반영하기
         const data = res.data.data;
 
         if (Array.isArray(data)) {
-          setExperiments(data); // 배열이 맞으면 그대로 세팅!
+          setExperiments(data); // 데이터가 배열이면 세팅!
         } else {
-          console.log("data가 배열이 아님:", data);
-          setExperiments([]); // 배열이 아니면 빈 배열로 안전하게 예외처리
+          console.log("응답받은 data가 배열 형식이 아닙니다:", data);
+          setExperiments([]); // 방어코드 예외 처리
         }
 
         setIsLoading(false);
       } catch (error) {
-        console.error("데이터 로드 실패:", error);
+        console.error("실험 데이터 가져오기 실패:", error);
         setErrorMessage(error.message);
         setIsLoading(false);
       }
     };
 
     fetchExperiments();
-  }, []);
+  }, [navigate]);
 
   if (isLoading)
     return (
