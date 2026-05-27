@@ -1,33 +1,36 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // 1. 페이지 이동을 위해 라우터 훅 추가
 import Header from "../../components/header/Header";
-import Api from "../../api/Api"; // 기존 프로젝트에서 쓰던 공통 Api 인스턴스 사용
+import Api from "../../api/Api";
 import "./Upcoming.css";
 
 function Upcoming() {
-  // 1. 초기값은 빈 배열([])로 둬야 처음에 map을 돌릴 때 에러가 안 남
+  const navigate = useNavigate(); // 2. 네비게이트 함수 선언
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // 2. 오타 수정 및 공통 Api로 GET 요청 처리
-        const response = await Api.get("/experiments/upcoming");
-
-        // 3. 백엔드 응답 구조(res.data.data)가 배열인 경우 상태에 저장
-        const result = response.data?.success;
-        if (Array.isArray(result)) {
-          setData(result);
-        } else if (result) {
-          // 만약 단일 객체로 오면 배열로 감싸서 저장 (map 에러 방지)
-          setData([result]);
-        }
-      } catch (error) {
-        console.error("진행 예정 실험 조회 실패:", error);
+  // 데이터 불러오기 함수
+  const fetchData = async () => {
+    try {
+      const response = await Api.get("/experiments/upcoming");
+      const result = response.data?.success;
+      if (Array.isArray(result)) {
+        setData(result);
+      } else if (result) {
+        setData([result]);
       }
-    };
+    } catch (error) {
+      console.error("진행 예정 실험 조회 실패:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
+
+  // 3. 기존의 Api.post 로직을 싹 지우고 페이지 이동 핸들러로 변경
+  const handleCreateExperimentClick = () => {
+    navigate("/createExperiment");
+  };
 
   return (
     <div>
@@ -41,6 +44,16 @@ function Upcoming() {
             <span>{item.dDayLabel}</span>
           </div>
         ))}
+      </div>
+
+      {/* 버튼 래퍼 */}
+      <div className="button-container">
+        <button
+          className="create-experiment-btn"
+          onClick={handleCreateExperimentClick} // 4. 클릭 시 이동 함수 호출
+        >
+          실험 생성
+        </button>
       </div>
     </div>
   );

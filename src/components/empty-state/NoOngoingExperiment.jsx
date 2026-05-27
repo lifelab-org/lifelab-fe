@@ -30,7 +30,7 @@ function NoOngoingExperiment({ onCreated }) {
     <div className="Modalbox">
       <img src={logo} className="modal-logo" alt="logo" />
       <div className="experiment-state">지금 진행 중인 실험이 없어요.</div>
-      <div className="experiment-ready">작은 실험부터 시작해 볼까요? 야르</div>
+      <div className="experiment-ready">작은 실험부터 시작해 볼까요?</div>
       <button
         type="button"
         className="making-experiments"
