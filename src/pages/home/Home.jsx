@@ -15,7 +15,7 @@ export default function Home() {
     const fetchExperiments = async () => {
       try {
         await Api.get("/auth/me");
-        console.log("로그인 상태 확인 완료 🎉");
+        console.log("로그인 상태 확인 완료");
 
         const res = await Api.get("/experiments/ongoing");
         console.log("실험 목록 응답:", res.data);
