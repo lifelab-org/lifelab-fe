@@ -1,0 +1,73 @@
+.upcoming-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 20px;
+  max-width: 420px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.upcoming-list > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative; /* 디데이 우측 고정을 위한 기준점 */
+  background-color: #ffffff;
+  border: 1px solid #e1e3fe;
+  border-radius: 12px;
+  padding: 20px;
+  min-height: 90px;
+  box-sizing: border-box;
+}
+
+/* 3. 시안 첫 번째 카드처럼 'D-Day' 당일인 카드 하이라이트 (선택자 활용) */
+.upcoming-list > div:first-child {
+  background-color: #f0efff;
+  border-color: #d1cffe;
+}
+
+/* 4. h3 타이틀 스타일 (왼쪽 동그라미 아이콘 가상 요소로 구현) */
+.upcoming-list h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 타이틀 왼쪽에 들어가는 유색 원형 아이콘 */
+.upcoming-list h3::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #f5b991; /* 기본 주황색 */
+}
+
+/* 첫 번째 카드의 원형 아이콘은 파란색으로 변경 */
+.upcoming-list > div:first-child h3::before {
+  background-color: #abd3ea;
+}
+
+/* 5. p 서브타이틀 스타일 */
+.upcoming-list p {
+  font-size: 13px;
+  color: #9c9c9c;
+  margin: 0;
+}
+
+/* 6. span (D-Day 레이블) 우측 정렬 및 보라색 커스텀 */
+.upcoming-list span {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  font-weight: 700;
+  color: #9c8ceb;
+}
