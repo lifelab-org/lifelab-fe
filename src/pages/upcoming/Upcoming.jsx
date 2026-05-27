@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Header from "../../components/header/Header";
 import Api from "../../api/Api"; // 기존 프로젝트에서 쓰던 공통 Api 인스턴스 사용
+import "./Upcoming.css";
 
 function Upcoming() {
   // 1. 초기값은 빈 배열([])로 둬야 처음에 map을 돌릴 때 에러가 안 남
