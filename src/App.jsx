@@ -63,7 +63,7 @@ function App() {
                       path="createPrerecordAlert"
                       element={<CreatePrerecordAlert />}
                     />
-                    <Route path="prerecord" element={<Prerecord />} />
+                    <Route path="prerecord/:experimentId" element={<Prerecord />} />
                     <Route
                       path="NoOngoingExperiment"
                       element={<NoOngoingExperiment />}

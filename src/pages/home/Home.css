@@ -22,8 +22,8 @@
 .experiment-list {
   display: flex;
   flex-direction: column;
-  gap: 12px; /* upcoming과 동일하게 12px */
-  padding: 0 20px; /* upcoming과 동일하게 상하 0, 좌우 20px */
+  gap: 12px; /* upcoming과 동일하게 12px로 수정 */
+  padding: 0 20px; /* upcoming과 동일하게 상하 0, 좌우 20px로 수정 */
   max-width: 420px;
   margin: 0 auto;
   box-sizing: border-box;
@@ -37,10 +37,10 @@
   justify-content: center;
   position: relative; /* 디데이 우측 고정을 위한 기준점 */
   background-color: #ffffff;
-  border: 1px solid #e1e3fe;
+  border: 1px solid #9c8ceb;
   border-radius: 12px;
   padding: 20px;
-  min-height: 90px; /* upcoming과 동일하게 90px */
+  min-height: 90px; /* upcoming과 동일하게 90px로 수정 */
   box-sizing: border-box;
   text-decoration: none; /* Link 태그 기본 밑줄 제거 */
 }
@@ -94,33 +94,9 @@
   font-weight: 700;
   color: #9c8ceb;
 }
-
-/* ========================================================== */
-/* 7. [추가] 하단 버튼 영역 스타일 (.upcoming-list 관련 규격 일치) */
-.button-container {
-  padding: 0 20px;
-  max-width: 420px;
-  margin: 30px auto 100px auto; /* 네비게이션 바 고려한 하단 여백 */
-  box-sizing: border-box;
-}
-
-/* 실험 생성 버튼 디자인 */
-.create-experiment-btn {
-  width: 100%;
-  height: 52px;
-  background-color: #7b69d6; /* 시안 보라색 */
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 600;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.2s ease;
-}
-
-.create-experiment-btn:hover {
-  background-color: #7f6edb;
+.experiment-card:active {
+  background-color: #ede9ff;
+  border-color: #b9b5f9;
+  transform: scale(0.98);
+  transition: all 0.1 ease;
 }

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './Prerecord.css';
 import { ArrowLeft } from 'lucide-react';
+import { useNavigate, useParams } from 'react-router-dom';
+import api from '../../api/Api';
 
 const Prerecord = () => {
      
-    const experimentId = '3'; // 임시값. 모든 api연결 완료 후 아래 두 줄 주석 풀기
-    // const { experimentId } = useParams(); 
-    // const navigate = useNavigate();
+    const { experimentId } = useParams(); 
+    const navigate = useNavigate();
 
     const [metrics, setMetrics] = useState([]); // 서버에서 받아올 지표 목록
     const [records, setRecords] = useState({}); // 사용자가 선택한 상태 정도
@@ -16,7 +17,7 @@ const Prerecord = () => {
     useEffect(() => {
         const fetchMetrics = async () => {
             try {
-                const response = await fetch(`https://life-lab.shop/api/experiments/${experimentId}/record-items`);
+                const response = await fetch(`/experiments/${experimentId}/record-items`);
                 const data = await response.json();
 
                 if (data.status === 200 && data.result === "Success") {
@@ -66,7 +67,7 @@ const Prerecord = () => {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
-            // 'Authorization': `Bearer ${token}` // 로그인 api연결 완료 후 주석 풀기
+            'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(payload)
         });

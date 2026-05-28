@@ -73,6 +73,7 @@ export default function Home() {
           <div className="experiment-list">
             {experiments.map((exp) => (
               <Link
+                // 1. 고유 key값을 백엔드 변수명인 experimentId로 매핑
                 key={exp.experimentId}
                 to={`/experimentdetail/${exp.experimentId}`}
                 className={`experiment-card ${exp.dDay === 0 ? "highlight" : ""}`}
@@ -105,3 +106,6 @@ export default function Home() {
     </div>
   );
 }
+
+//실험이 잇는지 확인
+//잇으면ㅇ띄우기

@@ -4,6 +4,8 @@ import { Calendar, Minus, Plus, ArrowLeft } from 'lucide-react';
 import DatePicker from 'react-datepicker'; // 달력 라이브러리
 import "react-datepicker/dist/react-datepicker.css"; // 달력 기본 스타일; css에서 수정해서 덮어씌울 것
 import BottomNav from '../../components/BottomNav';
+import { useNavigate } from 'react-router-dom';
+import api from '../../api/Api';
 
 const CreateExperiment = () => {
     const [startDate, updateStartDate] = useState(null);
@@ -29,9 +31,15 @@ const CreateExperiment = () => {
       return date.toLocaleDateString('sv-SE'); // yyyy-mm-dd (UTC 기준 말고 로컬기준으로 함)
     };
 
+    const navigate = useNavigate();
+
+    const handleCreateClick = () => {
+      navigate('/created');
+    }
+
     const handleCreate = async () => {
   try {
-    const response = await fetch('https://life-lab.shop/api/experiments', {
+    const response = await fetch('/experiments', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -130,7 +138,7 @@ const CreateExperiment = () => {
             </main>
 
             <footer>
-                <button className={`create-button ${ isReady ? 'active' : ''}`} disabled={!isReady} onClick={handleCreate}>
+                <button className={`create-button ${ isReady ? 'active' : ''}`} disabled={!isReady} onClick={handleCreate} onClick={handleCreateClick}>
                   생성하기</button>
             </footer>
 
