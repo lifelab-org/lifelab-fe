@@ -33,32 +33,29 @@ const CreateExperiment = () => {
 
     const navigate = useNavigate();
 
-    const handleCreateClick = () => {
-      navigate('/created');
+    const goBackClick = () => {
+      navigate(-1);
     }
 
     const handleCreate = async () => {
   try {
-    const response = await fetch('/experiments', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({
+    const payload = {
         title,
         startDate: formatDate(startDate),
         endDate: formatDate(endDate),
         rule,
         recordItems: items.map(item => ({ name: item }))
-      })
-    });
+      }
 
-    const data = await response.json();
-    console.log(data);
+    const response = await api.post(`/experiments`, payload);
+    const data = response.data;
 
-    if (response.status === 201) {
+    console.log("서버 응답 데이터: ", data);
+
+    if (response.status === 201 || response.status === 200) {
       alert('실험 생성 성공!');
+      const newExperimentId = data.experimentId;
+      navigate('/created', { state: { experimentId: newExperimentId } });
     } else {
       alert(data?.error?.message || '에러 발생');
     }
@@ -73,7 +70,7 @@ const CreateExperiment = () => {
         <div className="experiment-container">
             {/* 헤더 */}
             <header className="experiment-header">
-                <ArrowLeft className="back-icon" />
+                <ArrowLeft className="back-icon" onClick={goBackClick} />
                 <h2 className="header-title">실험 생성</h2>
             </header>
 
@@ -131,14 +128,14 @@ const CreateExperiment = () => {
                         ))}
                         <div className="add-chip">
                           <button className="chip-plus-icon" onClick={addItem}><Plus /></button>
-                          <span classname="add-placeholder">항목추가</span>
+                          <span className="add-placeholder">항목추가</span>
                         </div>
                     </div>
                 </div>
             </main>
 
             <footer>
-                <button className={`create-button ${ isReady ? 'active' : ''}`} disabled={!isReady} onClick={handleCreate} onClick={handleCreateClick}>
+                <button className={`create-button ${ isReady ? 'active' : ''}`} disabled={!isReady} onClick={handleCreate}>
                   생성하기</button>
             </footer>
 
