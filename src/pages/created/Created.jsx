@@ -2,22 +2,29 @@ import React from 'react';
 import './Created.css';
 import CheckIcon from '../../assets/check.png';
 import { ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Created = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate();  
+    const location = useLocation();
+    const experimentId = location.state?.experimentId;
+    
     const handlePrerecordClick = () => {
-        navigate('/prerecord/${experimentId}');
+        navigate(`/prerecord/${experimentId}`);
     }
     const handleAlertClick = () => {
-        navigate('/createPrerecordAlert');
+        navigate(`/createPrerecordAlert`);
     }
+    const goBackClick = () => {
+        navigate(-1);
+    }
+
 
     return (
         <div className="experiment-success">
             {/* 헤더 */}
             <header className="experiment-header">
-                <ArrowLeft className="back-icon" />
+                <ArrowLeft className="back-icon" onClick={goBackClick} />
                 <h2 className="header-title">실험 생성</h2>
             </header>
 

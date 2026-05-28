@@ -9,12 +9,15 @@ const CreatedPrerecordAlert = () => {
     const handleHomeClick = () => {
         navigate('/home');
     }
+    const goBackClick = () => {
+        navigate(-1);
+    }
 
     return (
         <div className="experiment-success">
             {/* 헤더 */}
             <header className="experiment-header">
-                <ArrowLeft className="back-icon" />
+                <ArrowLeft className="back-icon" onClick={goBackClick} />
                 <h2 className="header-title">실험 생성</h2>
             </header>
 
