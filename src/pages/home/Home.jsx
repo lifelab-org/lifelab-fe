@@ -12,7 +12,7 @@ export default function Home() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleCreateExperimentClick = () => {
-    navigate("/createExperiment"); // 실제 실험 생성 라우터 주소에 맞게 수정하세요!
+    navigate("/createExperiment");
   };
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function Home() {
         if (Array.isArray(data)) {
           setExperiments(data);
         } else {
-          setExperiments([]);
+          setExperiments(data);
         }
 
         setIsLoading(false);
@@ -74,18 +74,14 @@ export default function Home() {
             {experiments.map((exp) => (
               <Link
                 key={exp.experimentId}
-                // 💡 [여기 수정!] 주소 뒤에 클릭한 실험의 ID가 붙어서 이동하도록 템플릿 리터럴로 변경
                 to={`/experimentdetail/${exp.experimentId}`}
                 className={`experiment-card ${exp.dDay === 0 ? "highlight" : ""}`}
               >
-                {/* 3. 왼쪽 텍스트 그룹 (제목 + 서브타이틀) */}
                 <div className="card-info">
                   <h3 className="experiment-title">{exp.title}</h3>
-                  {/* 백엔드 응답의 subtitle ("아직 실험 전 상태가...") 바인딩 */}
                   <p className="experiment-subtitle">{exp.subtitle}</p>
                 </div>
 
-                {/* 4. 오른쪽 D-Day 표시 (0일이면 D-Day, 그 외엔 D-5, D-31 형태로 출력) */}
                 <span className="experiment-dday">
                   {exp.dDay === 0 ? "D-Day" : `D-${exp.dDay}`}
                 </span>
@@ -94,14 +90,17 @@ export default function Home() {
           </div>
         )}
 
-        <div className="button-container">
-          <button
-            className="create-experiment-btn"
-            onClick={handleCreateExperimentClick}
-          >
-            실험 생성
-          </button>
-        </div>
+        {/* 💡 실험 데이터가 0개이므로 아래 버튼은 화면에 나타나지 않게 됩니다! */}
+        {experiments.length > 0 && (
+          <div className="button-container">
+            <button
+              className="create-experiment-btn"
+              onClick={handleCreateExperimentClick}
+            >
+              실험 생성
+            </button>
+          </div>
+        )}
       </main>
     </div>
   );
