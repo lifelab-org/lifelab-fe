@@ -11,6 +11,10 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const handleCreateExperimentClick = () => {
+    navigate("/createExperiment"); // 실제 실험 생성 라우터 주소에 맞게 수정하세요!
+  };
+
   useEffect(() => {
     const fetchExperiments = async () => {
       try {
@@ -90,6 +94,15 @@ export default function Home() {
             ))}
           </div>
         )}
+
+        <div className="button-container">
+          <button
+            className="create-experiment-btn"
+            onClick={handleCreateExperimentClick}
+          >
+            실험 생성
+          </button>
+        </div>
       </main>
     </div>
   );
