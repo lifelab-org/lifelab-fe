@@ -73,9 +73,10 @@ export default function Home() {
           <div className="experiment-list">
             {experiments.map((exp) => (
               <Link
+                // 1. 고유 key값을 백엔드 변수명인 experimentId로 매핑
                 key={exp.experimentId}
-                // 💡 [여기 수정!] 주소 뒤에 클릭한 실험의 ID가 붙어서 이동하도록 템플릿 리터럴로 변경
-                to={`/experimentdetail/${exp.experimentId}`}
+                to="/record"
+                // 2. 디데이가 0일 때 카드 하이라이트(배경색 변경 등) 효과 부여
                 className={`experiment-card ${exp.dDay === 0 ? "highlight" : ""}`}
               >
                 {/* 3. 왼쪽 텍스트 그룹 (제목 + 서브타이틀) */}
@@ -106,3 +107,6 @@ export default function Home() {
     </div>
   );
 }
+
+//실험이 잇는지 확인
+//잇으면ㅇ띄우기
