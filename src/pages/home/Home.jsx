@@ -20,7 +20,7 @@ export default function Home() {
         const res = await Api.get("/experiments/ongoing");
         console.log("실험 목록 응답:", res.data);
 
-        const data = res.data.data;
+        const data = res.data?.success;
 
         if (Array.isArray(data)) {
           setExperiments(data);
@@ -69,11 +69,23 @@ export default function Home() {
           <div className="experiment-list">
             {experiments.map((exp) => (
               <Link
-                key={exp.id}
+                // 1. 고유 key값을 백엔드 변수명인 experimentId로 매핑
+                key={exp.experimentId}
                 to="/record"
-                className={`experiment-card ${exp.id === 1 ? "highlight" : ""}`}
+                // 2. 디데이가 0일 때 카드 하이라이트(배경색 변경 등) 효과 부여
+                className={`experiment-card ${exp.dDay === 0 ? "highlight" : ""}`}
               >
-                <h3 className="experiment-title">{exp.title}</h3>
+                {/* 3. 왼쪽 텍스트 그룹 (제목 + 서브타이틀) */}
+                <div className="card-info">
+                  <h3 className="experiment-title">{exp.title}</h3>
+                  {/* 백엔드 응답의 subtitle ("아직 실험 전 상태가...") 바인딩 */}
+                  <p className="experiment-subtitle">{exp.subtitle}</p>
+                </div>
+
+                {/* 4. 오른쪽 D-Day 표시 (0일이면 D-Day, 그 외엔 D-5, D-31 형태로 출력) */}
+                <span className="experiment-dday">
+                  {exp.dDay === 0 ? "D-Day" : `D-${exp.dDay}`}
+                </span>
               </Link>
             ))}
           </div>
@@ -82,3 +94,6 @@ export default function Home() {
     </div>
   );
 }
+
+//실험이 잇는지 확인
+//잇으면ㅇ띄우기
