@@ -90,7 +90,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* 💡 실험 데이터가 0개이므로 아래 버튼은 화면에 나타나지 않게 됩니다! */}
+        {/*실험 데이터가 0개일 때 조건부 렌더링 추가 */}
         {experiments.length > 0 && (
           <div className="button-container">
             <button
