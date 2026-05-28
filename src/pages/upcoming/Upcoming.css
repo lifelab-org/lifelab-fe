@@ -22,12 +22,6 @@
   box-sizing: border-box;
 }
 
-/* 3. 시안 첫 번째 카드처럼 'D-Day' 당일인 카드 하이라이트 (선택자 활용) */
-.upcoming-list > div:first-child {
-  background-color: #f0efff;
-  border-color: #d1cffe;
-}
-
 /* 4. h3 타이틀 스타일 (왼쪽 동그라미 아이콘 가상 요소로 구현) */
 .upcoming-list h3 {
   font-size: 18px;
@@ -47,11 +41,6 @@
   height: 20px;
   border-radius: 50%;
   background-color: #f5b991; /* 기본 주황색 */
-}
-
-/* 첫 번째 카드의 원형 아이콘은 파란색으로 변경 */
-.upcoming-list > div:first-child h3::before {
-  background-color: #abd3ea;
 }
 
 /* 5. p 서브타이틀 스타일 */
