@@ -65,7 +65,7 @@ export default function CalendarPage() {
     const controller = new AbortController();
 
     axios
-      .get(`/api/experiments/calendar?month=${toMonthString(viewDate)}`, {
+      .get(`https://life-lab.shop/api/experiments/calendar?month=${toMonthString(viewDate)}`, {
         withCredentials: true,
         signal: controller.signal,
       })
