@@ -11,11 +11,12 @@ const MAX_BARS = 3;
 
 // ─── Pure helpers ─────────────────────────────────────────────────────────────
 
+
 function toMonthString(date) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
 }
 
-// "YYYY-MM-DD" → Date (로컬 시간 기준, timezone 오차 방지)
+//시간별로 뜨기
 function parseLocalDate(str) {
   const [y, m, d] = str.split("-").map(Number);
   return new Date(y, m - 1, d);
