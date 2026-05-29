@@ -19,7 +19,7 @@ function ExperimentDetail() {
   const [isCompleteOpen, setIsCompleteOpen] = useState(false); // 삭제 완료 모달
 
   const handleStart = () => {
-    navigate("/record");
+    navigate("/record", { state: { experimentId } });
   };
 
   useEffect(() => {

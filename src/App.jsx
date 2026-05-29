@@ -13,7 +13,6 @@ import DetailLayout from "./layouts/DetailLayout";
 import Home from "./pages/home/Home";
 import Calendar from "./pages/Calendar";
 import Archive from "./pages/archive/Archive";
-import BottomNav from "./components/BottomNav";
 import Onboarding from "./pages/onboarding/Onboarding";
 import KakaoCallback from "./pages/callback/KakaoCallback";
 
@@ -106,8 +105,6 @@ function App() {
                   </Route>
                 </Routes>
               </main>
-
-              <BottomNav />
             </div>
           }
         />
