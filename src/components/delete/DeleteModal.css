@@ -85,23 +85,23 @@
 .delete-btn {
   flex: 1;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 12px 0;
   font-size: 14px;
   cursor: pointer;
-  background: #e5e5e5; /* ⭐ 둘 다 똑같은 회색 */
-  color: #333; /* 글자색도 통일 */
+  background: #e5e5e5;
+  color: white; /* 글자색도 통일 */
   transition: all 0.2s ease;
 }
 
 /* --- 취소 버튼 호버 --- */
 .cancel-btn:hover {
-  background: #d4d4d4; /* 살짝 더 진한 회색 */
+  background: linear-gradient(90deg, #7b6df6);
 }
 
 /* --- 삭제 버튼 호버: 이때 보라색으로 변신 --- */
 .delete-btn:hover {
-  background: linear-gradient(90deg, #7b6df6, #6a5acd);
+  background: linear-gradient(90deg, #7b6df6);
   color: white; /* 글자색 흰색으로 변경 */
   box-shadow: 0 4px 12px rgba(123, 109, 246, 0.3);
 }
