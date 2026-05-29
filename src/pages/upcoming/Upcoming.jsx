@@ -36,13 +36,15 @@ function Upcoming() {
 
       <div className="upcoming-list">
         {data.map((item) => (
-          <div
-            key={item.experimentId}
-            style={{
-              "--circle-color": item.color || "#A294F9",
-            }}
-          >
-            <h3>{item.title}</h3>
+          <div key={item.experimentId}>
+            <h3>
+              {/* 🎯 가상 요소(::before) 대신 실제 div 태그로 동그라미를 그려 색상을 다이렉트로 꽂아줌 */}
+              <div
+                className="color-circle"
+                style={{ backgroundColor: item.color || "#A294F9" }}
+              />
+              {item.title}
+            </h3>
             <p>{item.subtitle}</p>
             <span>{item.dDayLabel}</span>
           </div>

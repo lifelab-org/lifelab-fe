@@ -62,17 +62,13 @@
   gap: 10px;
 }
 
-/* 타이틀 왼쪽 원형 아이콘 규격 그대로 유지 */
-.experiment-title::before {
-  content: "";
+/* 🎯 [수정] ::before를 지우고 실제 div 태그에 매핑될 동그라미 스타일 지정 */
+.color-circle {
   display: inline-block;
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  /* ★ 고정된 주황색을 지우고, 자바스크립트에서 실시간으로 꽂아주는 
-    --circle-color 변수를 적용합니다. 
-  */
-  background-color: var(--circle-color);
+  flex-shrink: 0; /* 텍스트 길어져도 동그라미가 찌그러지지 않도록 방지 */
 }
 
 /* 5. 서브타이틀 스타일 (.upcoming-list p 규격과 100% 일치) */
@@ -97,5 +93,5 @@
   background-color: #ede9ff;
   border-color: #b9b5f9;
   transform: scale(0.98);
-  transition: all 0.1 ease;
+  transition: all 0.1s ease;
 }
