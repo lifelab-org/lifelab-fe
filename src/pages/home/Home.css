@@ -22,8 +22,8 @@
 .experiment-list {
   display: flex;
   flex-direction: column;
-  gap: 12px; /* upcoming과 동일하게 12px로 수정 */
-  padding: 0 20px; /* upcoming과 동일하게 상하 0, 좌우 20px로 수정 */
+  gap: 12px;
+  padding: 0 20px;
   max-width: 420px;
   margin: 0 auto;
   box-sizing: border-box;
@@ -40,7 +40,7 @@
   border: 1px solid #9c8ceb;
   border-radius: 12px;
   padding: 20px;
-  min-height: 90px; /* upcoming과 동일하게 90px로 수정 */
+  min-height: 90px;
   box-sizing: border-box;
   text-decoration: none; /* Link 태그 기본 밑줄 제거 */
 }
@@ -62,19 +62,17 @@
   gap: 10px;
 }
 
-/* 타이틀 왼쪽 원형 아이콘 (기본 주황색) */
+/* 타이틀 왼쪽 원형 아이콘 규격 그대로 유지 */
 .experiment-title::before {
   content: "";
   display: inline-block;
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: #f5b991;
-}
-
-/* 하이라이트 카드의 원형 아이콘은 파란색으로 변경 */
-.experiment-card.highlight .experiment-title::before {
-  background-color: #abd3ea;
+  /* ★ 고정된 주황색을 지우고, 자바스크립트에서 실시간으로 꽂아주는 
+    --circle-color 변수를 적용합니다. 
+  */
+  background-color: var(--circle-color);
 }
 
 /* 5. 서브타이틀 스타일 (.upcoming-list p 규격과 100% 일치) */
@@ -94,6 +92,7 @@
   font-weight: 700;
   color: #9c8ceb;
 }
+
 .experiment-card:active {
   background-color: #ede9ff;
   border-color: #b9b5f9;

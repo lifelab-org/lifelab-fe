@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom"; // 💡 useParams 추가
+import { useNavigate, useParams } from "react-router-dom";
 import "./ExperimentDetail.css";
 import Delete from "../../assets/delete.png";
 import ArrowLeft from "../../assets/arrow-left.png";
 import DeleteModal from "../../components/delete/DeleteModal";
 import DeleteCompleteModal from "../../components/deletecompletemodal/DeleteCompleteModal";
-import Api from "../../api/Api"; // 💡 Api 인스턴스 임포트
+import Api from "../../api/Api";
 
 function ExperimentDetail() {
   const navigate = useNavigate();
@@ -17,6 +17,10 @@ function ExperimentDetail() {
   const [isClicked, setIsClicked] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isCompleteOpen, setIsCompleteOpen] = useState(false); // 삭제 완료 모달
+
+  const handleStart = () => {
+    navigate("/record");
+  };
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -38,7 +42,6 @@ function ExperimentDetail() {
     }
   }, [experimentId]);
 
-  // 💡 2. 실험 삭제 API 연결
   const handleDelete = async () => {
     try {
       await Api.delete(`/experiments/${experimentId}`); // 삭제 요청
@@ -52,7 +55,7 @@ function ExperimentDetail() {
 
   const goHome = () => {
     setIsCompleteOpen(false);
-    navigate("/"); // 홈으로 이동
+    navigate("/");
   };
 
   if (isLoading) {
@@ -71,7 +74,6 @@ function ExperimentDetail() {
         onClick={() => navigate(-1)}
       />
 
-      {/* 💡 실험 이름 바인딩 */}
       <div className="experimentdetail-header">
         {experiment?.title || "실험 정보"}
       </div>
@@ -87,7 +89,7 @@ function ExperimentDetail() {
       <div className="experiment-box">
         <div className="experimentdate">
           <div className="title">실험기간</div>
-          {/* 💡 시작일과 종료일 바인딩 */}
+
           <div className="value">
             {experiment
               ? `${experiment.startDate} ~ ${experiment.endDate}`
@@ -99,7 +101,7 @@ function ExperimentDetail() {
 
         <div className="remainingdate">
           <div className="title">남은기간</div>
-          {/* 💡 홈화면과 동일하게 dDay 값 분기 처리 */}
+
           <div className="value">
             {experiment?.dDay === 0 ? "D-Day" : `D-${experiment?.dDay || 0}`}
           </div>
@@ -109,7 +111,7 @@ function ExperimentDetail() {
 
         <div className="experimentrule">
           <div className="title">실험규칙</div>
-          {/* 💡 실험 규칙 바인딩 */}
+
           <div className="value">
             {experiment?.rule || "지정된 규칙이 없습니다."}
           </div>
@@ -134,12 +136,11 @@ function ExperimentDetail() {
 
       <div
         className={`today-record-start ${isClicked ? "clicked" : ""}`}
-        onClick={() => setIsClicked(!isClicked)}
+        onClick={handleStart}
       >
         오늘의 기록 시작
       </div>
 
-      {/* --- 모달 영역 --- */}
       <DeleteModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}

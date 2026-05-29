@@ -1,14 +1,26 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // 1. 페이지 이동을 위해 라우터 훅 추가
+import { useNavigate } from "react-router-dom";
 import Header from "../../components/header/Header";
 import Api from "../../api/Api";
 import "./Upcoming.css";
 
+const PASTEL_COLORS = [
+  "#8EECF5",
+  "#70C1FF",
+  "#FFE5EC",
+  "#FFF3CD",
+  "#B9FBC0",
+  "#D2F1FA",
+  "#E8AEFF",
+  "#FBC4AB",
+  "#D8F3DC",
+  "#F0E6EF",
+];
+
 function Upcoming() {
-  const navigate = useNavigate(); // 2. 네비게이트 함수 선언
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
 
-  // 데이터 불러오기 함수
   const fetchData = async () => {
     try {
       const response = await Api.get("/experiments/upcoming");
@@ -27,7 +39,6 @@ function Upcoming() {
     fetchData();
   }, []);
 
-  // 3. 기존의 Api.post 로직을 싹 지우고 페이지 이동 핸들러로 변경
   const handleCreateExperimentClick = () => {
     navigate("/createExperiment");
   };
@@ -37,8 +48,13 @@ function Upcoming() {
       <Header />
 
       <div className="upcoming-list">
-        {data.map((item) => (
-          <div key={item.experimentId}>
+        {data.map((item, index) => (
+          <div
+            key={item.experimentId}
+            style={{
+              "--circle-color": PASTEL_COLORS[index % PASTEL_COLORS.length],
+            }}
+          >
             <h3>{item.title}</h3>
             <p>{item.subtitle}</p>
             <span>{item.dDayLabel}</span>
@@ -46,11 +62,10 @@ function Upcoming() {
         ))}
       </div>
 
-      {/* 버튼 래퍼 */}
       <div className="button-container">
         <button
           className="create-experiment-btn"
-          onClick={handleCreateExperimentClick} // 4. 클릭 시 이동 함수 호출
+          onClick={handleCreateExperimentClick}
         >
           실험 생성
         </button>
