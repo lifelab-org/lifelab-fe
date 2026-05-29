@@ -13,7 +13,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  position: relative; /* 디데이 우측 고정을 위한 기준점 */
+  position: relative;
   background-color: #ffffff;
   border: 1px solid #9c8ceb;
   border-radius: 12px;
@@ -22,7 +22,6 @@
   box-sizing: border-box;
 }
 
-/* 4. h3 타이틀 스타일 (왼쪽 동그라미 아이콘 가상 요소로 구현) */
 .upcoming-list h3 {
   font-size: 18px;
   font-weight: 700;
@@ -33,24 +32,22 @@
   gap: 10px;
 }
 
-/* 타이틀 왼쪽에 들어가는 유색 원형 아이콘 */
+/* 동그라미 코드 */
 .upcoming-list h3::before {
   content: "";
   display: inline-block;
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: #f5b991; /* 기본 주황색 */
+  background-color: var(--circle-color);
 }
 
-/* 5. p 서브타이틀 스타일 */
 .upcoming-list p {
   font-size: 13px;
   color: #9c9c9c;
   margin: 0;
 }
 
-/* 6. span (D-Day 레이블) 우측 정렬 및 보라색 커스텀 */
 .upcoming-list span {
   position: absolute;
   right: 20px;
@@ -60,19 +57,18 @@
   font-weight: 700;
   color: #9c8ceb;
 }
-/* 버튼을 감싸는 컨테이너 영역 (리스트와 좌우 여백을 맞춤) */
+
 .button-container {
   padding: 0 20px;
   max-width: 420px;
-  margin: 30px auto 100px auto; /* 하단 네비게이션 바가 가리지 않게 아래 여백 넉넉히 설정 */
+  margin: 30px auto 100px auto;
   box-sizing: border-box;
 }
 
-/* 실험 생성 버튼 디자인 (시안 반영) */
 .create-experiment-btn {
   width: 100%;
   height: 52px;
-  background-color: #7b69d6; /* 시안의 보라색 */
+  background-color: #7b69d6;
   color: #ffffff;
   font-size: 16px;
   font-weight: 600;

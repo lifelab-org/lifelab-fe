@@ -5,6 +5,20 @@ import NoOngoingExperiment from "../../components/empty-state/NoOngoingExperimen
 import "./Home.css";
 import Api from "../../api/Api";
 
+// 서로 확연히 분리되는 진행 중 실험 전용 파스텔톤 10가지
+const PASTEL_COLORS = [
+  "#FFADB7", // 파스텔 레드
+  "#FFD1A9", // 파스텔 주황
+  "#FFEAA7", // 파스텔 옐로우
+  "#D6F5D6", // 파스텔 연두
+  "#98F5E1", // 파스텔 민트
+  "#A3C4F3", // 파스텔 하늘
+  "#CFBAF0", // 파스텔 보라
+  "#FAD6FA", // 파스텔 핑크
+  "#E6C5B3", // 파스텔 브라운
+  "#BDE0FE", // 파스텔 블루
+];
+
 export default function Home() {
   const navigate = useNavigate();
   const [experiments, setExperiments] = useState([]);
@@ -71,12 +85,17 @@ export default function Home() {
           </div>
         ) : (
           <div className="experiment-list">
-            {experiments.map((exp) => (
+            {experiments.map((exp, index) => (
               <Link
-                // 1. 고유 key값을 백엔드 변수명인 experimentId로 매핑
                 key={exp.experimentId}
                 to={`/experimentdetail/${exp.experimentId}`}
                 className={`experiment-card ${exp.dDay === 0 ? "highlight" : ""}`}
+                /* ★ 기존 작성하신 구조 그대로 복구하고, 
+                  인라인 스타일로 CSS 변수(--circle-color)에 파스텔 색상만 매핑해 줍니다.
+                */
+                style={{
+                  "--circle-color": PASTEL_COLORS[index % PASTEL_COLORS.length],
+                }}
               >
                 <div className="card-info">
                   <h3 className="experiment-title">{exp.title}</h3>
@@ -91,7 +110,6 @@ export default function Home() {
           </div>
         )}
 
-        {/*실험 데이터가 0개일 때 조건부 렌더링 추가 */}
         {experiments.length > 0 && (
           <div className="button-container">
             <button
@@ -106,6 +124,3 @@ export default function Home() {
     </div>
   );
 }
-
-//실험이 잇는지 확인
-//잇으면ㅇ띄우기
