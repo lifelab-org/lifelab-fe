@@ -13,7 +13,7 @@ export default function Home() {
 
   const handleCreateExperimentClick = () => {
     navigate("/createExperiment");
-  };
+  }; //하이
 
   useEffect(() => {
     const fetchExperiments = async () => {
@@ -24,12 +24,15 @@ export default function Home() {
         const res = await Api.get("/experiments/ongoing");
         console.log("실험 목록 응답:", res.data);
 
-        const data = res.data?.success;
+        const successData = res.data?.success;
 
-        if (Array.isArray(data)) {
-          setExperiments(data);
+        // 🎯 캘린더 응답 구조와 동일하게 success.experiments 배열을 정확히 타겟팅합니다.
+        if (successData && Array.isArray(successData.experiments)) {
+          setExperiments(successData.experiments);
+        } else if (Array.isArray(successData)) {
+          setExperiments(successData);
         } else {
-          setExperiments(data);
+          setExperiments([]);
         }
 
         setIsLoading(false);
@@ -76,7 +79,6 @@ export default function Home() {
                 key={exp.experimentId}
                 to={`/experimentdetail/${exp.experimentId}`}
                 className={`experiment-card ${exp.dDay === 0 ? "highlight" : ""}`}
-                /* 🎯 더미 배열 완전 제거 후 백엔드가 준 exp.color를 직접 꽂아줌 (없으면 보라색 기본값 사용) */
                 style={{
                   "--circle-color": exp.color || "#A294F9",
                 }}
