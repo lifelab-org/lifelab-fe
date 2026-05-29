@@ -54,7 +54,7 @@ const CreateExperiment = () => {
 
     if (response.status === 201 || response.status === 200) {
       alert('실험 생성 성공!');
-      const newExperimentId = data.experimentId;
+      const newExperimentId = data.success.experimentId;
       navigate('/created', { state: { experimentId: newExperimentId } });
     } else {
       alert(data?.error?.message || '에러 발생');
