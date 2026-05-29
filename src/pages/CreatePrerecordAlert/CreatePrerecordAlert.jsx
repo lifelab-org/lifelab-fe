@@ -2,14 +2,22 @@ import React from 'react';
 import './CreatePrerecordAlert.css';
 import XIcon from '../../assets/XIcon.png';
 import { ArrowLeft } from 'lucide-react';
+import { useNavigate} from 'react-router-dom';
 
-const Created = () => {
+const CreatedPrerecordAlert = () => {
+    const navigate = useNavigate();
+    const handleHomeClick = () => {
+        navigate('/home');
+    }
+    const goBackClick = () => {
+        navigate(-1);
+    }
 
     return (
         <div className="experiment-success">
             {/* 헤더 */}
             <header className="experiment-header">
-                <ArrowLeft className="back-icon" />
+                <ArrowLeft className="back-icon" onClick={goBackClick} />
                 <h2 className="header-title">실험 생성</h2>
             </header>
 
@@ -21,10 +29,10 @@ const Created = () => {
                         <div className="prerecord-alert-title">실험 전 상태를 기록하지 않으면<br />실험이 시작하지 않아요</div>
                         <div className="home-record-info">나중에 홈화면에서 기록할 수 있어요</div>
                     </div>
-                    <button className="back-home-button">확인</button>
+                    <button className="back-home-button" onClick={handleHomeClick}>확인</button>
                 </div>
             </main>
         </div>
     );
 };
-export default Created;
+export default CreatedPrerecordAlert;
