@@ -10,7 +10,6 @@ const MAX_BARS = 3;
 
 // ─── Pure helpers ─────────────────────────────────────────────────────────────
 
-
 function toMonthString(date) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
 }
@@ -40,7 +39,7 @@ export default function CalendarPage() {
   today.setHours(0, 0, 0, 0);
 
   const [viewDate, setViewDate] = useState(
-    () => new Date(today.getFullYear(), today.getMonth(), 1)
+    () => new Date(today.getFullYear(), today.getMonth(), 1),
   );
   const [experiments, setExperiments] = useState([]);
 
@@ -66,10 +65,13 @@ export default function CalendarPage() {
     const controller = new AbortController();
 
     axios
-      .get(`https://life-lab.shop/api/experiments/calendar?month=${toMonthString(viewDate)}`, {
-        withCredentials: true,
-        signal: controller.signal,
-      })
+      .get(
+        `https://life-lab.shop/api/experiments/calendar?month=${toMonthString(viewDate)}`,
+        {
+          withCredentials: true,
+          signal: controller.signal,
+        },
+      )
       .then(({ data }) => {
         console.log("[Calendar] API 응답:", data);
         setExperiments(data.success?.experiments ?? []);
@@ -149,7 +151,6 @@ export default function CalendarPage() {
 
   return (
     <div className="bg-[#F9F9FB] flex flex-col items-center py-10 px-4 font-sans">
-
       <style>{`
 
         .react-calendar__month-view__days__day--neighboringMonth {
@@ -211,7 +212,6 @@ export default function CalendarPage() {
       `}</style>
 
       <div className="w-full max-w-md flex flex-col items-center">
-
         <h1 className="text-[17px] font-bold text-[#111] mb-6">캘린더</h1>
 
         {/* 월 네비게이션 */}
@@ -219,8 +219,9 @@ export default function CalendarPage() {
           <button
             onClick={handlePrevMonth}
             disabled={isMinMonth}
-            className={`flex items-center justify-center w-8 h-8 rounded-full ${isMinMonth ? "text-[#D1D1D1]" : "text-[#111]"
-              }`}
+            className={`flex items-center justify-center w-8 h-8 rounded-full ${
+              isMinMonth ? "text-[#D1D1D1]" : "text-[#111]"
+            }`}
           >
             <ChevronLeft size={22} strokeWidth={2.5} />
           </button>
@@ -232,8 +233,9 @@ export default function CalendarPage() {
           <button
             onClick={handleNextMonth}
             disabled={isMaxMonth}
-            className={`flex items-center justify-center w-8 h-8 rounded-full ${isMaxMonth ? "text-[#D1D1D1]" : "text-[#111]"
-              }`}
+            className={`flex items-center justify-center w-8 h-8 rounded-full ${
+              isMaxMonth ? "text-[#D1D1D1]" : "text-[#111]"
+            }`}
           >
             <ChevronRight size={22} strokeWidth={2.5} />
           </button>
@@ -256,7 +258,6 @@ export default function CalendarPage() {
         {/* 실험 목록 카드 */}
         <div className="w-full bg-white rounded-[24px] shadow-[0_2px_10px_rgba(0,0,0,0.04)] p-5 mt-5 mb-10">
           <div className="grid grid-cols-2 gap-3">
-
             {displayExperiments.map((exp) => (
               <button
                 key={exp.experimentId}
@@ -274,10 +275,8 @@ export default function CalendarPage() {
               <Plus size={18} strokeWidth={2.5} />
               항목 추가
             </button>
-
           </div>
         </div>
-
       </div>
     </div>
   );

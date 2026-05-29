@@ -4,19 +4,6 @@ import Header from "../../components/header/Header";
 import Api from "../../api/Api";
 import "./Upcoming.css";
 
-const PASTEL_COLORS = [
-  "#8EECF5",
-  "#70C1FF",
-  "#FFE5EC",
-  "#FFF3CD",
-  "#B9FBC0",
-  "#D2F1FA",
-  "#E8AEFF",
-  "#FBC4AB",
-  "#D8F3DC",
-  "#F0E6EF",
-];
-
 function Upcoming() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
@@ -48,11 +35,11 @@ function Upcoming() {
       <Header />
 
       <div className="upcoming-list">
-        {data.map((item, index) => (
+        {data.map((item) => (
           <div
             key={item.experimentId}
             style={{
-              "--circle-color": PASTEL_COLORS[index % PASTEL_COLORS.length],
+              "--circle-color": item.color || "#A294F9",
             }}
           >
             <h3>{item.title}</h3>
