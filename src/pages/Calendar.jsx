@@ -6,7 +6,6 @@ import "react-calendar/dist/Calendar.css";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const COLORS = ["#FBE285", "#BAE59C", "#D7C2F2", "#ABC9EB"];
 const MAX_BARS = 3;
 
 // ─── Pure helpers ─────────────────────────────────────────────────────────────
@@ -47,9 +46,10 @@ export default function CalendarPage() {
 
   // ── 날짜 경계 체크 ──────────────────────────────────────────────────────────
 
-  const isCurrentMonth =
+  // 최대: 올해 12월
+  const isMaxMonth =
     viewDate.getFullYear() === today.getFullYear() &&
-    viewDate.getMonth() === today.getMonth();
+    viewDate.getMonth() === 11;
 
   const oneYearAgo = new Date(today.getFullYear(), today.getMonth() - 11, 1);
 
@@ -71,9 +71,11 @@ export default function CalendarPage() {
         signal: controller.signal,
       })
       .then(({ data }) => {
+        console.log("[Calendar] API 응답:", data);
         setExperiments(data.success?.experiments ?? []);
       })
       .catch((err) => {
+        console.error("[Calendar] API 에러:", err);
         if (!axios.isCancel(err)) setExperiments([]);
       });
 
@@ -88,7 +90,7 @@ export default function CalendarPage() {
   };
 
   const handleNextMonth = () => {
-    if (isCurrentMonth) return;
+    if (isMaxMonth) return;
     setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1));
   };
 
@@ -99,7 +101,7 @@ export default function CalendarPage() {
 
     return (
       <div className="w-full flex flex-col gap-1 mt-1">
-        {displayExperiments.map((exp, idx) => {
+        {displayExperiments.map((exp) => {
           const start = parseLocalDate(exp.startDate);
           const end = parseLocalDate(exp.endDate);
 
@@ -114,7 +116,7 @@ export default function CalendarPage() {
           return (
             <div
               key={exp.experimentId}
-              style={{ backgroundColor: COLORS[idx % COLORS.length] }}
+              style={{ backgroundColor: exp.color }}
               className={`
                 w-full h-[18px]
                 text-[10px] text-[#333]
@@ -229,8 +231,8 @@ export default function CalendarPage() {
 
           <button
             onClick={handleNextMonth}
-            disabled={isCurrentMonth}
-            className={`flex items-center justify-center w-8 h-8 rounded-full ${isCurrentMonth ? "text-[#D1D1D1]" : "text-[#111]"
+            disabled={isMaxMonth}
+            className={`flex items-center justify-center w-8 h-8 rounded-full ${isMaxMonth ? "text-[#D1D1D1]" : "text-[#111]"
               }`}
           >
             <ChevronRight size={22} strokeWidth={2.5} />
@@ -255,14 +257,14 @@ export default function CalendarPage() {
         <div className="w-full bg-white rounded-[24px] shadow-[0_2px_10px_rgba(0,0,0,0.04)] p-5 mt-5 mb-10">
           <div className="grid grid-cols-2 gap-3">
 
-            {displayExperiments.map((exp, idx) => (
+            {displayExperiments.map((exp) => (
               <button
                 key={exp.experimentId}
                 className="flex items-center gap-2.5 border border-[#DFD3F4] rounded-[14px] px-4 py-3.5 text-[15px] font-semibold text-[#333]"
               >
                 <div
                   className="w-4 h-4 rounded-full flex-shrink-0"
-                  style={{ backgroundColor: COLORS[idx % COLORS.length] }}
+                  style={{ backgroundColor: exp.color }}
                 />
                 <span className="truncate">{exp.title}</span>
               </button>
