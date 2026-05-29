@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Archive.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../../api/Api";
 import okImage from "../../assets/ok.png";
 import xImage from "../../assets/X.png";
 
@@ -15,20 +15,31 @@ function Archive() {
 
   useEffect(() => {
     const fetchArchive = async () => {
+      // 🔍 1단계: 이 함수가 실행되긴 하는지 확인
+      console.log("1. fetchArchive 함수가 정상적으로 시작됨!");
+
       try {
         const response = await axios.get("/experiments/archive", {
           withCredentials: true,
         });
 
-        if (
-          response.data &&
-          response.data.success &&
-          response.data.success.experiments
-        ) {
+        // 🔍 2단계: 서버 응답이 들어왔는지 확인
+        console.log("2. 서버 응답 성공적으로 도착함! 데이터:", response.data);
+
+        if (response.data?.success?.experiments) {
           setData(response.data.success.experiments);
         }
       } catch (error) {
-        console.error("아카이브 조회 실패:", error);
+        // 🔍 3단계: 만약 에러가 났다면 catch문에서 범인을 잡음
+        console.log("3. 🔴 catch 블록으로 튕김! 에러 정체는 아래와 같음:");
+        console.error(error); // 👈 이 에러 객체의 내용을 정확히 봐야 합니다.
+
+        // 혹시 서버가 준 에러 응답 내용이 있는지 확인
+        if (error.response) {
+          console.log("서버가 뱉은 에러 응답 body:", error.response.data);
+          console.log("서버가 뱉은 에러 상태 코드:", error.response.status);
+        }
+
         setData([]);
       }
     };
@@ -72,7 +83,7 @@ function Archive() {
                   <img
                     src={experiment.isSuccess ? okImage : xImage}
                     alt={experiment.isSuccess ? "성공" : "실패"}
-                    className="status-icon" /* CSS에서 크기(width, height) 조절을 위해 클래스 추가 */
+                    className="status-icon"
                   />
                 </div>
               </div>
