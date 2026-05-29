@@ -77,8 +77,9 @@ export default function CalendarPage() {
         setExperiments(data.success?.experiments ?? []);
       })
       .catch((err) => {
+        if (axios.isCancel(err)) return;
         console.error("[Calendar] API 에러:", err);
-        if (!axios.isCancel(err)) setExperiments([]);
+        setExperiments([]);
       });
 
     return () => controller.abort();
@@ -127,7 +128,7 @@ export default function CalendarPage() {
                 ${radiusClass}
               `}
             >
-              {showTitle ? exp.title : ""}
+              {showTitle ? (exp.title.length > 5 ? exp.title.slice(0, 5) + "..." : exp.title) : ""}
             </div>
           );
         })}
@@ -201,8 +202,8 @@ export default function CalendarPage() {
         .react-calendar__month-view__days__day--weekend { color: #222; }
         .react-calendar__tile:enabled:hover,
         .react-calendar__tile:enabled:focus {
-          background-color: #ffffff;
-          border-radius: 8px;
+          background-color: transparent;
+          cursor: default;
         }
         .today-highlight > abbr {
           background-color: #9C8CEB;
@@ -258,7 +259,8 @@ export default function CalendarPage() {
         {/* 실험 목록 카드 */}
         <div className="w-full bg-white rounded-[24px] shadow-[0_2px_10px_rgba(0,0,0,0.04)] p-5 mt-5 mb-10">
           <div className="grid grid-cols-2 gap-3">
-            {displayExperiments.map((exp) => (
+
+            {experiments.map((exp) => (
               <button
                 key={exp.experimentId}
                 className="flex items-center gap-2.5 border border-[#DFD3F4] rounded-[14px] px-4 py-3.5 text-[15px] font-semibold text-[#333]"
