@@ -40,8 +40,23 @@ export default function RecordCondition() {
     setIsModalOpen(true);
   };
 
-  const handleConfirm = () => {
-    navigate("/record/success", { state: { result, ratings, experimentId } });
+  const handleConfirm = async () => {
+    const payload = {
+      outcome: result === "성공" ? "SUCCESS" : "FAIL",
+      values: Object.entries(ratings).map(([recordItemKey, value]) => ({
+        recordItemKey,
+        value,
+      })),
+    };
+
+    try {
+      console.log("[일일기록] 전송 payload:", payload);
+      const res = await Api.post(`/experiments/${experimentId}/daily-record`, payload);
+      console.log("[일일기록] 저장 성공:", res.data);
+      navigate("/record/success");
+    } catch (err) {
+      console.error("[일일기록] 저장 실패:", err.response?.data ?? err.message);
+    }
   };
 
   return (
