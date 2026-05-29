@@ -5,20 +5,6 @@ import NoOngoingExperiment from "../../components/empty-state/NoOngoingExperimen
 import "./Home.css";
 import Api from "../../api/Api";
 
-// 서로 확연히 분리되는 진행 중 실험 전용 파스텔톤 10가지
-const PASTEL_COLORS = [
-  "#FFADB7", // 파스텔 레드
-  "#FFD1A9", // 파스텔 주황
-  "#FFEAA7", // 파스텔 옐로우
-  "#D6F5D6", // 파스텔 연두
-  "#98F5E1", // 파스텔 민트
-  "#A3C4F3", // 파스텔 하늘
-  "#CFBAF0", // 파스텔 보라
-  "#FAD6FA", // 파스텔 핑크
-  "#E6C5B3", // 파스텔 브라운
-  "#BDE0FE", // 파스텔 블루
-];
-
 export default function Home() {
   const navigate = useNavigate();
   const [experiments, setExperiments] = useState([]);
@@ -33,28 +19,24 @@ export default function Home() {
     const fetchExperiments = async () => {
       try {
         await Api.get("/auth/me");
-        console.log("로그인 상태 확인 완료");
-
         const res = await Api.get("/experiments/ongoing");
-        console.log("실험 목록 응답:", res.data);
+        const successData = res.data?.success;
 
-        const data = res.data?.success;
-
-        if (Array.isArray(data)) {
-          setExperiments(data);
+        if (successData && Array.isArray(successData.experiments)) {
+          setExperiments(successData.experiments);
+        } else if (Array.isArray(successData)) {
+          setExperiments(successData);
         } else {
-          setExperiments(data);
+          setExperiments([]);
         }
 
         setIsLoading(false);
       } catch (error) {
         console.error("에러 발생:", error);
-
         if (error.response && error.response.status === 401) {
           navigate("/onboarding", { replace: true });
           return;
         }
-
         setErrorMessage(error.message);
         setIsLoading(false);
       }
@@ -85,20 +67,21 @@ export default function Home() {
           </div>
         ) : (
           <div className="experiment-list">
-            {experiments.map((exp, index) => (
+            {experiments.map((exp) => (
               <Link
                 key={exp.experimentId}
                 to={`/experimentdetail/${exp.experimentId}`}
                 className={`experiment-card ${exp.dDay === 0 ? "highlight" : ""}`}
-                /* ★ 기존 작성하신 구조 그대로 복구하고, 
-                  인라인 스타일로 CSS 변수(--circle-color)에 파스텔 색상만 매핑해 줍니다.
-                */
-                style={{
-                  "--circle-color": PASTEL_COLORS[index % PASTEL_COLORS.length],
-                }}
               >
                 <div className="card-info">
-                  <h3 className="experiment-title">{exp.title}</h3>
+                  <h3 className="experiment-title">
+                    {/* 🎯 가상 요소(::before) 대신 실제 div 태그로 동그라미를 그려 색상을 다이렉트로 꽂아줌 */}
+                    <div
+                      className="color-circle"
+                      style={{ backgroundColor: exp.color || "#A294F9" }}
+                    />
+                    {exp.title}
+                  </h3>
                   <p className="experiment-subtitle">{exp.subtitle}</p>
                 </div>
 

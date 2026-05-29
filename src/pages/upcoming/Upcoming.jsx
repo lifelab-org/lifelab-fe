@@ -4,19 +4,6 @@ import Header from "../../components/header/Header";
 import Api from "../../api/Api";
 import "./Upcoming.css";
 
-const PASTEL_COLORS = [
-  "#8EECF5",
-  "#70C1FF",
-  "#FFE5EC",
-  "#FFF3CD",
-  "#B9FBC0",
-  "#D2F1FA",
-  "#E8AEFF",
-  "#FBC4AB",
-  "#D8F3DC",
-  "#F0E6EF",
-];
-
 function Upcoming() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
@@ -48,14 +35,16 @@ function Upcoming() {
       <Header />
 
       <div className="upcoming-list">
-        {data.map((item, index) => (
-          <div
-            key={item.experimentId}
-            style={{
-              "--circle-color": PASTEL_COLORS[index % PASTEL_COLORS.length],
-            }}
-          >
-            <h3>{item.title}</h3>
+        {data.map((item) => (
+          <div key={item.experimentId}>
+            <h3>
+              {/* 🎯 가상 요소(::before) 대신 실제 div 태그로 동그라미를 그려 색상을 다이렉트로 꽂아줌 */}
+              <div
+                className="color-circle"
+                style={{ backgroundColor: item.color || "#A294F9" }}
+              />
+              {item.title}
+            </h3>
             <p>{item.subtitle}</p>
             <span>{item.dDayLabel}</span>
           </div>

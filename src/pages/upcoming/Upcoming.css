@@ -32,14 +32,13 @@
   gap: 10px;
 }
 
-/* 동그라미 코드 */
-.upcoming-list h3::before {
-  content: "";
+/* 🎯 [수정] ::before를 지우고 실제 div 태그에 매핑될 동그라미 스타일 지정 */
+.color-circle {
   display: inline-block;
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: var(--circle-color);
+  flex-shrink: 0; /* 텍스트 길어져도 동그라미가 찌그러지지 않도록 방지 */
 }
 
 .upcoming-list p {
