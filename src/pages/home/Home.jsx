@@ -70,12 +70,15 @@ export default function Home() {
             {experiments.map((exp) => (
               <Link
                 key={exp.experimentId}
-                to={`/experimentdetail/${exp.experimentId}`}
+                to={
+                  exp.dDay === 0
+                    ? `/experimentreport/${exp.experimentId}`
+                    : `/experimentdetail/${exp.experimentId}`
+                }
                 className={`experiment-card ${exp.dDay === 0 ? "highlight" : ""}`}
               >
                 <div className="card-info">
                   <h3 className="experiment-title">
-                    {/* 🎯 가상 요소(::before) 대신 실제 div 태그로 동그라미를 그려 색상을 다이렉트로 꽂아줌 */}
                     <div
                       className="color-circle"
                       style={{ backgroundColor: exp.color || "#A294F9" }}

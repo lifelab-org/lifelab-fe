@@ -94,12 +94,10 @@
   transition: all 0.2s ease;
 }
 
-/* --- 취소 버튼 호버 --- */
-.cancel-btn:hover {
+xs .cancel-btn:hover {
   background: linear-gradient(90deg, #7b6df6);
 }
 
-/* --- 삭제 버튼 호버: 이때 보라색으로 변신 --- */
 .delete-btn:hover {
   background: linear-gradient(90deg, #7b6df6);
   color: white; /* 글자색 흰색으로 변경 */

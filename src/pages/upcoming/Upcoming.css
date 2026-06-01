@@ -32,7 +32,6 @@
   gap: 10px;
 }
 
-/* 🎯 [수정] ::before를 지우고 실제 div 태그에 매핑될 동그라미 스타일 지정 */
 .color-circle {
   display: inline-block;
   width: 20px;
