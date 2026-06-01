@@ -115,13 +115,10 @@ const Prerecord = () => {
                         onSelect={(score) => handleStatusSelect(metric.id, score)}
                     />
                 ))}
-            </main>
-
-            <footer>
                 <button className="save-button" disabled={isLoading || !isAllSelected} onClick={handleSave}>
                     기록 저장
                 </button>
-            </footer>
+            </main>
         </div>
     )
 }
@@ -134,13 +131,11 @@ function MetricRow({ title, selectedValue, onSelect }) {
   return (
     <div className="metric-card">
       <h3 className="metric-title">{title}</h3>
-      <div className="circles-container">
+      <div className="score-container">
         {levels.map((level) => (
-          <button
-            key={level}
-            className={`circle-button ${selectedValue === level ? 'selected' : ''}`}
-            onClick={() => onSelect(level)}
-          />
+          <button key={level} className={`score-button ${selectedValue === level ? 'selected' : ''}`} onClick={() => onSelect(level)}>
+            {level}
+          </button>
         ))}
       </div>
     </div>
