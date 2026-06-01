@@ -75,8 +75,9 @@ function App() {
                       path="/experimentdetail/:experimentId"
                       element={<ExperimentDetail />}
                     />
+
                     <Route
-                      path="experimentreport"
+                      path="experimentreport/:experimentId"
                       element={<ExperimentReport />}
                     />
                   </Route>
@@ -98,10 +99,7 @@ function App() {
                       element={<RecordFailReason />}
                     />
                     <Route path="record/exit" element={<RecordExit />} />
-                    <Route
-                      path="archivedetail"
-                      element={<ArchiveDetail />}
-                    ></Route>
+                    <Route path="archivedetail" element={<ArchiveDetail />} />
                   </Route>
                 </Routes>
               </main>
