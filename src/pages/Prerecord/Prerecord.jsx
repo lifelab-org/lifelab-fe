@@ -115,13 +115,10 @@ const Prerecord = () => {
                         onSelect={(score) => handleStatusSelect(metric.id, score)}
                     />
                 ))}
-            </main>
-
-            <footer>
                 <button className="save-button" disabled={isLoading || !isAllSelected} onClick={handleSave}>
                     기록 저장
                 </button>
-            </footer>
+            </main>
         </div>
     )
 }
