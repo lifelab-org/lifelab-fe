@@ -130,13 +130,11 @@ function MetricRow({ title, selectedValue, onSelect }) {
   return (
     <div className="metric-card">
       <h3 className="metric-title">{title}</h3>
-      <div className="circles-container">
+      <div className="score-container">
         {levels.map((level) => (
-          <button
-            key={level}
-            className={`circle-button ${selectedValue === level ? 'selected' : ''}`}
-            onClick={() => onSelect(level)}
-          />
+          <button key={level} className={`score-button ${selectedValue === level ? 'selected' : ''}`} onClick={() => onSelect(level)}>
+            {level}
+          </button>
         ))}
       </div>
     </div>
