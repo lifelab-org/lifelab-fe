@@ -32,6 +32,7 @@ import Upcoming from "./pages/upcoming/Upcoming";
 import ExperimentDetail from "./pages/experiment-detail/ExperimentDetail";
 import ArchiveDetail from "./pages/archivedetail/ArchiveDetail";
 import ExperimentReport from "./pages/experiment-report/ExperimentReport";
+import Graph from "./pages/graph/Graph";
 
 function App() {
   return (
@@ -80,6 +81,8 @@ function App() {
                       path="experimentreport/:experimentId"
                       element={<ExperimentReport />}
                     />
+
+                    <Route path="graph/:experimentId" element={<Graph />} />
                   </Route>
 
                   {/* 디테일 레이아웃 그룹 */}

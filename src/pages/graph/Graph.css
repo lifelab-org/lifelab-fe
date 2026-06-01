@@ -1,0 +1,44 @@
+/* ==========================================================================
+   [Graph 전용 스타일] - Report CSS 컴포넌트 규격과 완전 일치 처리
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+}
+
+.back-button-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  width: 100%;
+}
+
+/* 피그마 시안 중앙의 연보라색 대형 차트 컨테이너 영역 */
+.chart-large-box {
+  width: 100%;
+  height: 480px; /* 시안 비례 모바일 최적화 높이값 */
+  background-color: #f1edff; /* 시안의 은은한 연보라 배경색 적용 */
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* 차트 데이터 누락 시 안내 문구 */
+.empty-chart-text {
+  font-size: 14px;
+  color: #9d8df1;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* 헤더 보라색 체크 배경 동그라미를 위한 예외 처리 */
+.check-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+}
