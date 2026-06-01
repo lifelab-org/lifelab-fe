@@ -1,46 +1,63 @@
-import Header from "../../components/header/Header";
 import { useState, useEffect } from "react";
-// import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Header from "../../components/header/Header";
+import Api from "../../api/Api";
+import "./Upcoming.css";
 
 function Upcoming() {
-  const dummyData = [
-    { id: 1, title: "운동 습관 만들기" },
-    { id: 2, title: "아침 기상 루틴" },
-  ];
+  const navigate = useNavigate();
+  const [data, setData] = useState([]);
 
-  const [data, setData] = useState(dummyData);
-
-  /*
-  // API 호출 예시
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // GET 요청 예시
-        const response = await axios.get("/api/experiments/upcoming");
-
-        // 데이터 확인
-        console.log(response.data);
-
-        // 상태 저장 (필요하면 useState 추가해서 setState)
-        // setData(response.data);
-
-      } catch (error) {
-        // 에러 처리
-        console.error("API 호출 에러:", error);
+  const fetchData = async () => {
+    try {
+      const response = await Api.get("/experiments/upcoming");
+      const result = response.data?.success;
+      if (Array.isArray(result)) {
+        setData(result);
+      } else if (result) {
+        setData([result]);
       }
-    };
+    } catch (error) {
+      console.error("진행 예정 실험 조회 실패:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
-  */
+
+  const handleCreateExperimentClick = () => {
+    navigate("/createExperiment");
+  };
+
   return (
     <div>
       <Header />
 
-      <div className="content">
+      <div className="upcoming-list">
         {data.map((item) => (
-          <div key={item.id}>{item.title}</div>
+          <div key={item.experimentId}>
+            <h3>
+              {/* 🎯 가상 요소(::before) 대신 실제 div 태그로 동그라미를 그려 색상을 다이렉트로 꽂아줌 */}
+              <div
+                className="color-circle"
+                style={{ backgroundColor: item.color || "#A294F9" }}
+              />
+              {item.title}
+            </h3>
+            <p>{item.subtitle}</p>
+            <span>{item.dDayLabel}</span>
+          </div>
         ))}
+      </div>
+
+      <div className="button-container">
+        <button
+          className="create-experiment-btn"
+          onClick={handleCreateExperimentClick}
+        >
+          실험 생성
+        </button>
       </div>
     </div>
   );

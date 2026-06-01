@@ -1,7 +1,8 @@
+/* 타이틀 영역 */
 .archive-title {
   font-size: 20px;
-  font-weight: 450;
-  margin: 18px;
+  font-weight: 500;
+  margin: 20px;
   text-align: center;
 }
 
@@ -10,39 +11,89 @@
   margin-left: 20px;
 }
 
+/* 수평선: 부모 마진 무시하고 꽉 채우기 */
 .line {
-  margin-top: 8px;
-  width: 95%;
+  margin: 8px 0 0 0;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  border: 0;
+  border-top: 1px solid #eee;
 }
 
-.archive-title {
-  font-size: 20px;
-  font-weight: 450;
-  margin: 18px;
-  text-align: center;
+/* 빈 상태 전체 컨테이너 */
+.experiments-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.experiment-list {
-  font-size: 16px;
-  margin-left: 20px;
-}
-
-.line {
-  margin-top: 8px;
-  width: 95%;
+.empty-wrapper {
+  display: flex;
+  flex-direction: column; /* 세로 방향으로 쌓기 */
+  align-items: center; /* 가로 중앙 정렬 */
+  gap: 150px; /* 텍스트와 버튼 사이를 확 벌리고 싶으면 gap 사용 */
 }
 
 .empty {
   font-size: 24px;
   font-weight: 500;
   text-align: center;
-
-  margin-top: 160px; /* 👈 적당히 조절 */
+  line-height: 1.4;
+  margin-top: 130px;
+  color: #333;
 }
 
 .home-navigate {
   text-align: center;
   font-size: 16px;
   color: #929292;
-  margin-top: 130px;
+  cursor: pointer;
+}
+
+.archive-items-container {
+  width: 400px;
+  height: 61px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px;
+}
+
+.archive-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 20px;
+  border: 1px solid #a294f9;
+  border-radius: 12px;
+  background-color: #fff;
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.item-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111;
+}
+
+.item-date {
+  font-size: 11px;
+  color: #aaa;
+}
+
+.item-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
