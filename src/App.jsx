@@ -27,6 +27,7 @@ import CreateExperiment from "./pages/CreateExperiment/CreateExperiment";
 import Created from "./pages/created/Created";
 import CreatePrerecordAlert from "./pages/CreatePrerecordAlert/CreatePrerecordAlert";
 import Prerecord from "./pages/Prerecord/Prerecord";
+import Prerecorded from "./pages/Prerecorded/Prerecorded";
 import NoOngoingExperiment from "./components/empty-state/NoOngoingExperiment";
 import Upcoming from "./pages/upcoming/Upcoming";
 import ExperimentDetail from "./pages/experiment-detail/ExperimentDetail";
@@ -66,6 +67,7 @@ function App() {
                       path="prerecord/:experimentId"
                       element={<Prerecord />}
                     />
+                    
                     <Route
                       path="NoOngoingExperiment"
                       element={<NoOngoingExperiment />}
@@ -83,6 +85,10 @@ function App() {
 
                   {/* 디테일 레이아웃 그룹 */}
                   <Route element={<DetailLayout />}>
+                    <Route
+                      path="prerecorded/"
+                      element={<Prerecorded />}
+                    />
                     <Route path="record" element={<DailyRecord />} />
                     <Route
                       path="record/condition"

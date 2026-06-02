@@ -79,7 +79,7 @@ const Prerecord = () => {
 
         if (response.status === 200 && result.status === 200) {
             alert('실험 전 상태가 성공적으로 저장되었습니다!');
-            // navigate('/recorded'); // recorded 페이지 생성 후 주석 풀기
+            navigate('/prerecorded');
         } else {
             alert(`저장 실패: ${result.message || '다시 시도해주세요.'}`);
         }
