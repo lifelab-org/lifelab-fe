@@ -19,24 +19,33 @@ export default function Home() {
     const fetchExperiments = async () => {
       try {
         await Api.get("/auth/me");
+        console.log("로그인 상태 확인 완료");
+
         const res = await Api.get("/experiments/ongoing");
         const successData = res.data?.success;
 
+        let rawExperiments = [];
         if (successData && Array.isArray(successData.experiments)) {
-          setExperiments(successData.experiments);
+          rawExperiments = successData.experiments;
         } else if (Array.isArray(successData)) {
-          setExperiments(successData);
-        } else {
-          setExperiments([]);
+          rawExperiments = successData;
         }
+
+        // 오름차순 정렬
+        const sortedExperiments = [...rawExperiments].sort(
+          (a, b) => a.dDay - b.dDay,
+        );
+        setExperiments(sortedExperiments);
 
         setIsLoading(false);
       } catch (error) {
         console.error("에러 발생:", error);
+
         if (error.response && error.response.status === 401) {
           navigate("/onboarding", { replace: true });
           return;
         }
+
         setErrorMessage(error.message);
         setIsLoading(false);
       }
@@ -71,7 +80,7 @@ export default function Home() {
               <Link
                 key={exp.experimentId}
                 to={
-                  exp.dDay === 0
+                  exp.dDay <= 0
                     ? `/experimentreport/${exp.experimentId}`
                     : `/experimentdetail/${exp.experimentId}`
                 }
@@ -89,13 +98,19 @@ export default function Home() {
                 </div>
 
                 <span className="experiment-dday">
-                  {exp.dDay === 0 ? "D-Day" : `D-${exp.dDay}`}
+                  {/* 💡 음수 값을 절대값(Math.abs)으로 바꾸어 D--1 현상을 D+1로 올바르게 수정 */}
+                  {exp.dDay === 0
+                    ? "D-Day"
+                    : exp.dDay < 0
+                      ? `D+${Math.abs(exp.dDay)}`
+                      : `D-${exp.dDay}`}
                 </span>
               </Link>
             ))}
           </div>
         )}
 
+        {/* 실험 데이터가 1개 이상일 때만 실험 생성 버튼 활성화 */}
         {experiments.length > 0 && (
           <div className="button-container">
             <button
