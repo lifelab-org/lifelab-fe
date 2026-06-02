@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Calendar from "react-calendar";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import axios from "axios";
@@ -18,6 +18,30 @@ function toMonthString(date) {
 function parseLocalDate(str) {
   const [y, m, d] = str.split("-").map(Number);
   return new Date(y, m - 1, d);
+}
+
+// 겹치지 않는 최소 lane(행)에 각 실험을 배치하는 알고리즘
+// 시작일 기준 정렬 → API 순서와 무관하게 위치 고정
+function assignLanes(experiments) {
+  const withDates = [...experiments]
+    .map((exp) => ({
+      exp,
+      start: parseLocalDate(exp.startDate),
+      end: parseLocalDate(exp.endDate),
+    }))
+    .sort((a, b) => a.start - b.start);
+
+  const laneEnds = []; // 각 lane의 마지막 실험 종료일
+  const laneAssign = new Map(); // experimentId → lane 인덱스
+
+  for (const { exp, start, end } of withDates) {
+    const lane = laneEnds.findIndex((endDate) => start > endDate);
+    const assigned = lane === -1 ? laneEnds.length : lane;
+    laneEnds[assigned] = end;
+    laneAssign.set(exp.experimentId, assigned);
+  }
+
+  return { withDates, laneAssign };
 }
 
 function getBarRadiusClass(date, startDate, endDate) {
@@ -56,8 +80,7 @@ export default function CalendarPage() {
     viewDate.getFullYear() === oneYearAgo.getFullYear() &&
     viewDate.getMonth() === oneYearAgo.getMonth();
 
-  // 실제로 캘린더에 표시할 실험 (최대 3개, 슬롯 고정)
-  const displayExperiments = experiments.slice(0, MAX_BARS);
+  const laneData = useMemo(() => assignLanes(experiments), [experiments]);
 
   // ── API 호출 ────────────────────────────────────────────────────────────────
 
@@ -102,17 +125,26 @@ export default function CalendarPage() {
   const renderHabits = ({ date, view }) => {
     if (view !== "month") return null;
 
+    // 이 날짜에 활성화된 실험을 lane 슬롯에 배치
+    const slots = Array(MAX_BARS).fill(null);
+    let overflowCount = 0;
+
+    for (const { exp, start, end } of laneData.withDates) {
+      if (date < start || date > end) continue;
+      const lane = laneData.laneAssign.get(exp.experimentId);
+      if (lane < MAX_BARS) {
+        slots[lane] = { exp, start, end };
+      } else {
+        overflowCount++;
+      }
+    }
+
     return (
       <div className="w-full flex flex-col gap-1 mt-1">
-        {displayExperiments.map((exp) => {
-          const start = parseLocalDate(exp.startDate);
-          const end = parseLocalDate(exp.endDate);
+        {slots.map((item, i) => {
+          if (!item) return <div key={i} className="w-full h-[18px]" />;
 
-          // 이 날짜에 실험이 없으면 빈 공간 유지 (슬롯 고정)
-          if (date < start || date > end) {
-            return <div key={exp.experimentId} className="w-full h-[18px]" />;
-          }
-
+          const { exp, start, end } = item;
           const radiusClass = getBarRadiusClass(date, start, end);
           const showTitle = date.getTime() === start.getTime();
 
@@ -120,18 +152,17 @@ export default function CalendarPage() {
             <div
               key={exp.experimentId}
               style={{ backgroundColor: exp.color }}
-              className={`
-                w-full h-[18px]
-                text-[10px] text-[#333]
-                flex items-center px-1
-                overflow-hidden whitespace-nowrap
-                ${radiusClass}
-              `}
+              className={`w-full h-[18px] text-[10px] text-[#333] flex items-center px-1 overflow-hidden whitespace-nowrap ${radiusClass}`}
             >
-              {showTitle ? (exp.title.length > 5 ? exp.title.slice(0, 5) + "..." : exp.title) : ""}
+              {showTitle && <span className="truncate min-w-0">{exp.title}</span>}
             </div>
           );
         })}
+        {overflowCount > 0 && (
+          <div className="w-full text-[9px] text-[#999] text-right pr-1 leading-none">
+            +{overflowCount}
+          </div>
+        )}
       </div>
     );
   };
