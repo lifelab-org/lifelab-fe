@@ -212,9 +212,7 @@ const ExperimentReport = () => {
                   {/* 그래프용 지표별 변화 데이터 조회 API는 차트 라이브러리 연동 혹은 그래프 상세 서브뷰 진입 시 별도 활용 가능합니다. */}
                   <span
                     className="graph-link"
-                    onClick={() =>
-                      navigate(`/archive/metrics/graph/${experimentId}`)
-                    }
+                    onClick={() => navigate(`/graph/${experimentId}`)}
                   >
                     그래프로 확인하기
                   </span>
