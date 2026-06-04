@@ -14,7 +14,7 @@ const Prerecorded = () => {
                 <p>내일부터 매일매일 상태를 기록할 수 있어요</p>
             </main>
             <footer>
-                <button className="back-home-button">홈으로</button>
+                <button className="back-home-button" onClick={handleHomeClick}>홈으로</button>
             </footer>
         </div>
     )
