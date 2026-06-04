@@ -68,7 +68,7 @@ function App() {
                       path="prerecord/:experimentId"
                       element={<Prerecord />}
                     />
-                    
+
                     <Route
                       path="NoOngoingExperiment"
                       element={<NoOngoingExperiment />}
@@ -89,10 +89,7 @@ function App() {
 
                   {/* 디테일 레이아웃 그룹 */}
                   <Route element={<DetailLayout />}>
-                    <Route
-                      path="prerecorded/"
-                      element={<Prerecorded />}
-                    />
+                    <Route path="prerecorded/" element={<Prerecorded />} />
                     <Route path="record" element={<DailyRecord />} />
                     <Route
                       path="record/condition"
