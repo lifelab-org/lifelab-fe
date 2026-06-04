@@ -7,11 +7,7 @@ function DeleteCompleteModal({ isOpen, onHome }) {
   return (
     <div className="modal-overlay">
       <div className="complete-box">
-        <img
-          src={`${CheckGray}?v=1`}
-          className="check-icon"
-          alt="완료 아이콘"
-        />
+        <img src={CheckGray} className="check-icon" alt="완료 아이콘" />
         <div className="complete-title">삭제 완료!</div>
         <button className="home-btn" onClick={onHome}>
           홈으로
