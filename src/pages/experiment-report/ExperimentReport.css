@@ -16,16 +16,15 @@ body {
 
 .report-container {
   width: 100%;
-  max-width: 400px; /* 모바일 폭 고정 */
+  max-width: 400px;
   background-color: #ffffff;
   padding: 20px 24px;
-  text-align: left; /* 전체 텍스트 기본 왼쪽 정렬 강제 */
+  text-align: left;
 }
 
 /* 상단 영역 */
 .top-header {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
   margin-top: 20px;
@@ -35,7 +34,7 @@ body {
 .title-left {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* 왼쪽 정렬 강제 */
+  align-items: flex-start;
 }
 
 .main-title {
@@ -68,7 +67,6 @@ body {
   font-weight: 700;
   color: #000;
   margin-bottom: 12px;
-  text-align: left;
 }
 
 .divider-line {
@@ -82,7 +80,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  align-items: stretch; /* 좌우 꽉 차게 */
 }
 
 .toggle-item {
@@ -91,10 +88,8 @@ body {
   width: 100%;
 }
 
-/* ★ 여기가 핵심: 무조건 가로 배치되도록 row 강제 ★ */
 .toggle-header {
   display: flex;
-  flex-direction: row !important;
   justify-content: space-between;
   align-items: center;
   width: 100%;
@@ -104,51 +99,44 @@ body {
 
 .toggle-header-left {
   display: flex;
-  flex-direction: row !important;
   align-items: center;
-  justify-content: flex-start;
-  gap: 12px; /* 아이콘과 글자 사이 간격 */
+  gap: 12px;
+}
+
+.vector-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
 }
 
 .toggle-text {
   font-size: 16px;
   font-weight: 600;
   color: #111;
-  margin: 0;
-  padding: 0;
 }
 
 .toggle-value {
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 600;
   color: #000;
 }
 
-/* 토글 열렸을 때 하단 내용 */
+.graph-link {
+  font-size: 12px;
+  color: #a0a0a0;
+  cursor: pointer;
+}
+
+/* 펼쳐지는 하단 내용 */
 .toggle-content {
-  padding-left: 32px; /* 아이콘 폭만큼 좌측 여백 */
-  margin-top: 12px;
+  margin-top: 16px;
+  padding-left: 28px; /* 아이콘 넓이(16px) + 간격(12px) 맞춰서 들여쓰기 */
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* 왼쪽 정렬 강제 */
   width: 100%;
 }
 
 /* 지표 별 변화량 내부 */
-.graph-link-box {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end; /* 이건 우측 끝에 있어야 하므로 */
-  margin-bottom: 12px;
-}
-
-.graph-link {
-  font-size: 11px;
-  color: #b0b0b0;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
 .metrics-list {
   display: flex;
   flex-direction: column;
@@ -158,16 +146,15 @@ body {
 
 .metric-row {
   display: flex;
-  flex-direction: row !important;
   align-items: center;
   justify-content: space-between;
   width: 100%;
 }
 
 .m-label {
-  font-size: 14px;
+  font-size: 13px;
   color: #555;
-  min-width: 65px;
+  min-width: 60px;
   text-align: left;
 }
 
@@ -175,15 +162,14 @@ body {
   flex: 1;
   border-bottom: 2px dotted #e5e5e5;
   margin: 0 10px;
-  transform: translateY(-4px);
+  transform: translateY(-2px);
 }
 
 .m-values {
   display: flex;
-  flex-direction: row !important;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .v-num {
@@ -209,66 +195,68 @@ body {
   color: #9d8df1;
 }
 .gray-text {
-  color: #b0b0b0;
+  color: #999;
 }
 
 /* 가장 변화 폭이 컸던 지표 내부 */
 .biggest-change-label {
-  font-size: 13px;
-  color: #555;
-  margin-bottom: 10px;
-  text-align: left;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 12px;
 }
 
 .biggest-change-cards {
   display: flex;
-  flex-direction: row !important;
   align-items: center;
-  justify-content: flex-start;
   gap: 16px;
 }
 
-.card {
+.card-column {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 56px;
-  border-radius: 12px;
+  gap: 8px;
 }
 
-.gray-card {
+.card-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
   border: 1px solid #e0e0e0;
   background-color: #ffffff;
-}
-
-.purple-card {
-  border: 1px solid #d3ccf8;
-  background-color: #f6f4ff;
-}
-
-.card-num {
   font-size: 18px;
-  font-weight: 700;
-  color: #7f6edb;
+  font-weight: 600;
+  color: #000;
+}
+
+.card-box.purple-box {
+  border: 1px solid #d3ccf8;
+  color: #000;
 }
 
 .card-desc {
-  font-size: 10px;
+  font-size: 11px;
   color: #999;
-  margin-top: 2px;
 }
 
 .card-arrow {
-  color: #bbb;
+  color: #333;
   font-size: 14px;
+  margin-bottom: 24px; /* 박스들 중앙 높이에 맞추기 위한 마진 */
 }
 
 /* AI 코멘트 내부 */
 .ai-box {
   width: 100%;
-  height: 90px;
-  background-color: #ede9ff;
+  min-height: 80px;
+  background-color: #f6f4ff; /* 연보라 배경 */
   border-radius: 8px;
+  padding: 16px;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+  white-space: pre-wrap;
 }

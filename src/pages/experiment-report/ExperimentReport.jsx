@@ -1,39 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Api from "../../api/Api"; // 프로젝트 내의 Api 인스턴스 경로에 맞게 확인해주세요!
+import Api from "../../api/Api";
 import "./ExperimentReport.css";
-
-const IconRight = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#000"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={{ flexShrink: 0 }}
-  >
-    <polyline points="9 18 15 12 9 6"></polyline>
-  </svg>
-);
-
-const IconDown = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#000"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={{ flexShrink: 0 }}
-  >
-    <polyline points="6 9 12 15 18 9"></polyline>
-  </svg>
-);
+import vectorImage from "../../assets/Vector.png";
 
 const IconCheck = () => (
   <svg
@@ -50,19 +19,36 @@ const IconCheck = () => (
   </svg>
 );
 
+const MetricRow = ({ label, from, to, diff, active }) => (
+  <div className="metric-row">
+    <div className="m-label">{label}</div>
+    <div className="m-dots"></div>
+    <div className="m-values">
+      <span className="v-num">{from}</span>
+      <span className="v-arrow">→</span>
+      <span className="v-num">{to}</span>
+      <span className={`v-diff ${active ? "purple-text" : "gray-text"}`}>
+        {diff}
+      </span>
+    </div>
+  </div>
+);
+
 const ExperimentReport = () => {
   const { experimentId } = useParams();
   const navigate = useNavigate();
 
   const [reportData, setReportData] = useState({
-    successInfo: null, // 성공률 및 기본 타이틀 정보
-    attendanceRate: 0, // 출석률
-    metricsList: [], // 지표별 변화량
-    topMetric: null, // 가장 변화 폭이 컸던 지표
-    aiComment: "", // AI 코멘트
+    successInfo: null,
+    attendanceRate: 0,
+    metricsList: [],
+    topMetric: null,
+    aiComment: "",
   });
 
   const [isLoading, setIsLoading] = useState(true);
+
+  // ✨ 토글 열림/닫힘 상태를 관리하는 State
   const [openSections, setOpenSections] = useState({
     attendance: false,
     metrics: false,
@@ -103,7 +89,7 @@ const ExperimentReport = () => {
             commentRes.data?.success?.comment || "분석된 코멘트가 없습니다.",
         });
       } catch (error) {
-        console.error("레포트 데이터를 가져오는 중 오류 발생:", error);
+        console.error(error);
       } finally {
         setIsLoading(false);
       }
@@ -114,28 +100,21 @@ const ExperimentReport = () => {
     }
   }, [experimentId]);
 
-  // 3. 하단 결과 확인 완료 처리 기능 연결 (POST)
-  const handleResultCheck = async () => {
-    try {
-      const res = await Api.post(`/experiments/${experimentId}/result-check`);
-      if (res.data?.result === "Success") {
-        alert("실험 결과 확인이 완료되었습니다!");
-        navigate("/"); // 확인 후 메인 홈으로 이동 처리 예시
-      }
-    } catch (error) {
-      console.error("결과 확인 완료 처리 중 오류 발생:", error);
-      alert(
-        error.response?.data?.error?.message || "처리 중 오류가 발생했습니다.",
-      );
-    }
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "";
+    return dateStr.replace(/^\d{2}(\d{2})-(\d{2})-(\d{2})$/, "$1.$2.$3");
   };
 
+  // ✨ 토글 클릭 시 상태를 반전시키는 함수
   const toggleSection = (section) => {
     setOpenSections((prev) => ({
       ...prev,
       [section]: !prev[section],
     }));
   };
+
+  const { successInfo, attendanceRate, metricsList, topMetric, aiComment } =
+    reportData;
 
   if (isLoading) {
     return (
@@ -145,19 +124,9 @@ const ExperimentReport = () => {
     );
   }
 
-  // 날짜 포맷팅용 함수 (2025-12-20 -> 25.12.20)
-  const formatDate = (dateStr) => {
-    if (!dateStr) return "";
-    return dateStr.replace(/^\d{2}(\d{2})-(\d{2})-(\d{2})$/, "$1.$2.$3");
-  };
-
-  const { successInfo, attendanceRate, metricsList, topMetric, aiComment } =
-    reportData;
-
   return (
     <div className="report-wrapper">
       <div className="report-container">
-        {/* 상단 타이틀 영역 - 성공률 API에서 받아온 값 맵핑 */}
         <div className="top-header">
           <div className="title-left">
             <h1 className="main-title">
@@ -179,7 +148,6 @@ const ExperimentReport = () => {
         <div className="sub-title">실험 레포트</div>
         <hr className="divider-line" />
 
-        {/* 4개의 토글 리스트 */}
         <div className="toggle-list">
           {/* 1. 나의 실험 출석률 */}
           <div className="toggle-item">
@@ -188,10 +156,12 @@ const ExperimentReport = () => {
               onClick={() => toggleSection("attendance")}
             >
               <div className="toggle-header-left">
-                {openSections.attendance ? <IconDown /> : <IconRight />}
+                <img src={vectorImage} alt="화살표" className="vector-icon" />
                 <span className="toggle-text">나의 실험 출석률</span>
               </div>
-              <span className="toggle-value">{attendanceRate}%</span>
+              {openSections.attendance && (
+                <span className="toggle-value">{attendanceRate}%</span>
+              )}
             </div>
           </div>
 
@@ -202,21 +172,23 @@ const ExperimentReport = () => {
               onClick={() => toggleSection("metrics")}
             >
               <div className="toggle-header-left">
-                {openSections.metrics ? <IconDown /> : <IconRight />}
+                <img src={vectorImage} alt="화살표" className="vector-icon" />
                 <span className="toggle-text">지표 별 변화량</span>
               </div>
+              {openSections.metrics && (
+                <span
+                  className="graph-link"
+                  onClick={(e) => {
+                    e.stopPropagation(); // 부모(토글) 클릭 이벤트 방지
+                    navigate(`/graph/${experimentId}`);
+                  }}
+                >
+                  그래프로 확인하기
+                </span>
+              )}
             </div>
             {openSections.metrics && (
               <div className="toggle-content">
-                <div className="graph-link-box">
-                  {/* 그래프용 지표별 변화 데이터 조회 API는 차트 라이브러리 연동 혹은 그래프 상세 서브뷰 진입 시 별도 활용 가능합니다. */}
-                  <span
-                    className="graph-link"
-                    onClick={() => navigate(`/graph/${experimentId}`)}
-                  >
-                    그래프로 확인하기
-                  </span>
-                </div>
                 <div className="metrics-list">
                   {metricsList.map((metric, idx) => (
                     <MetricRow
@@ -231,9 +203,9 @@ const ExperimentReport = () => {
                   {metricsList.length === 0 && (
                     <div
                       style={{
-                        textAlign: "center",
                         padding: "15px",
                         color: "#999",
+                        fontSize: "14px",
                       }}
                     >
                       조회된 지표가 없습니다.
@@ -251,7 +223,7 @@ const ExperimentReport = () => {
               onClick={() => toggleSection("biggest")}
             >
               <div className="toggle-header-left">
-                {openSections.biggest ? <IconDown /> : <IconRight />}
+                <img src={vectorImage} alt="화살표" className="vector-icon" />
                 <span className="toggle-text">가장 변화 폭이 컸던 지표</span>
               </div>
             </div>
@@ -263,15 +235,15 @@ const ExperimentReport = () => {
                       {topMetric.recordItemKey}
                     </div>
                     <div className="biggest-change-cards">
-                      <div className="card gray-card">
-                        <span className="card-num">{topMetric.preValue}</span>
+                      <div className="card-column">
+                        <div className="card-box">{topMetric.preValue}</div>
                         <span className="card-desc">실험 전</span>
                       </div>
                       <span className="card-arrow">→</span>
-                      <div className="card purple-card">
-                        <span className="card-num">
+                      <div className="card-column">
+                        <div className="card-box purple-box">
                           {topMetric.valueAtMaxChange}
-                        </span>
+                        </div>
                         <span className="card-desc">
                           {formatDate(topMetric.recordDate)?.slice(3)}
                         </span>
@@ -280,11 +252,7 @@ const ExperimentReport = () => {
                   </>
                 ) : (
                   <div
-                    style={{
-                      textAlign: "center",
-                      padding: "15px",
-                      color: "#999",
-                    }}
+                    style={{ padding: "15px", color: "#999", fontSize: "14px" }}
                   >
                     데이터가 충분하지 않습니다.
                   </div>
@@ -297,22 +265,13 @@ const ExperimentReport = () => {
           <div className="toggle-item">
             <div className="toggle-header" onClick={() => toggleSection("ai")}>
               <div className="toggle-header-left">
-                {openSections.ai ? <IconDown /> : <IconRight />}
+                <img src={vectorImage} alt="화살표" className="vector-icon" />
                 <span className="toggle-text">AI 코멘트</span>
               </div>
             </div>
             {openSections.ai && (
               <div className="toggle-content">
-                <div
-                  className="ai-box"
-                  style={{
-                    whiteSpace: "pre-wrap",
-                    lineHeight: "1.5",
-                    fontSize: "14px",
-                  }}
-                >
-                  {aiComment}
-                </div>
+                <div className="ai-box">{aiComment}</div>
               </div>
             )}
           </div>
@@ -320,26 +279,11 @@ const ExperimentReport = () => {
 
         <div
           className="button-container"
-          style={{ marginTop: "30px", padding: "0 20px 20px" }}
+          style={{ marginTop: "40px", padding: "0 20px 20px" }}
         ></div>
       </div>
     </div>
   );
 };
-
-const MetricRow = ({ label, from, to, diff, active }) => (
-  <div className="metric-row">
-    <div className="m-label">{label}</div>
-    <div className="m-dots"></div>
-    <div className="m-values">
-      <span className="v-num">{from}</span>
-      <span className="v-arrow">→</span>
-      <span className="v-num">{to}</span>
-      <span className={`v-diff ${active ? "purple-text" : "gray-text"}`}>
-        {diff}
-      </span>
-    </div>
-  </div>
-);
 
 export default ExperimentReport;
