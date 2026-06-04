@@ -7,7 +7,7 @@ import { useNavigate} from 'react-router-dom';
 const CreatedPrerecordAlert = () => {
     const navigate = useNavigate();
     const handleHomeClick = () => {
-        navigate('/home');
+        navigate('/');
     }
     const goBackClick = () => {
         navigate(-1);
