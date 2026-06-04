@@ -31,7 +31,6 @@ import Prerecorded from "./pages/Prerecorded/Prerecorded";
 import NoOngoingExperiment from "./components/empty-state/NoOngoingExperiment";
 import Upcoming from "./pages/upcoming/Upcoming";
 import ExperimentDetail from "./pages/experiment-detail/ExperimentDetail";
-import ArchiveDetail from "./pages/archivedetail/ArchiveDetail";
 import ExperimentReport from "./pages/experiment-report/ExperimentReport";
 import Graph from "./pages/graph/Graph";
 
@@ -105,7 +104,6 @@ function App() {
                       element={<RecordFailReason />}
                     />
                     <Route path="record/exit" element={<RecordExit />} />
-                    <Route path="archivedetail" element={<ArchiveDetail />} />
                   </Route>
                 </Routes>
               </main>

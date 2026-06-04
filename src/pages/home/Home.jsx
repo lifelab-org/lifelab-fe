@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // ✨ Link 대신 navigate로 API 호출 후 이동 처리
+import { useNavigate } from "react-router-dom";
 import Header from "../../components/header/Header";
 import NoOngoingExperiment from "../../components/empty-state/NoOngoingExperiment";
 import "./Home.css";
@@ -15,32 +15,44 @@ export default function Home() {
     navigate("/createExperiment");
   };
 
-  // ✨ 카드 클릭 시 결과 확인 API를 먼저 거치고 이동하는 핸들러
+  // 카드 클릭 시 결과 확인 API를 거치고 이동하는 핸들러
   const handleCardClick = async (exp) => {
-    // 1. D-Day가 남아있는 경우 바로 상세 페이지로 이동
+    // 1. 실험 전 상태가 기록되지 않은 실험이면 prerecord 페이지로 최우선 이동
+    if (!exp.preStateRecorded) {
+      navigate(`/prerecord/${exp.experimentId}`);
+      return;
+    }
+
+    // 2. D-Day가 남아있는 경우(D-1 이상) 바로 상세 페이지로 이동
     if (exp.dDay > 0) {
       navigate(`/experimentdetail/${exp.experimentId}`);
       return;
     }
 
-    // 2. D-Day가 종료된 경우 (dDay <= 0) 결과 확인 API 호출
+    // 3. D-Day가 0 이하로 끝난 경우 결과 확인 API 호출 및 리포트 이동
     try {
-      // 명세서에 따른 POST 요청 실행
       await Api.post(`/experiments/${exp.experimentId}/result-check`);
       console.log(`${exp.experimentId}번 실험 결과 확인 완료`);
 
-      // 성공 시 리포트 페이지로 이동
+      // 클릭해서 완료 처리된 카드는 화면에서 없앰
+      setExperiments((prev) =>
+        prev.filter((item) => item.experimentId !== exp.experimentId),
+      );
+
+      // 성공 시 리포트 페이지로 감
       navigate(`/experimentreport/${exp.experimentId}`);
     } catch (error) {
       console.error("결과 확인 API 에러:", error);
 
-      // 인증 실패 시 온보딩으로
       if (error.response && error.response.status === 401) {
         navigate("/onboarding", { replace: true });
         return;
       }
 
-      // 이미 처리되었거나 다른 에러가 나도 일단 리포트로 안전하게 이동 시키기
+      // 이미 처리되었거나 에러가 나도 리포트로 안전하게 이동시키고 카드 제외
+      setExperiments((prev) =>
+        prev.filter((item) => item.experimentId !== exp.experimentId),
+      );
       navigate(`/experimentreport/${exp.experimentId}`);
     }
   };
@@ -61,8 +73,11 @@ export default function Home() {
           rawExperiments = successData;
         }
 
+        // 이미 날짜가 지난(음수) 실험은 진입 시점에 원천 차단하여 카드가 뜨지 않게 함
+        const ongoingOnly = rawExperiments.filter((exp) => exp.dDay >= 0);
+
         // 오름차순 정렬
-        const sortedExperiments = [...rawExperiments].sort(
+        const sortedExperiments = [...ongoingOnly].sort(
           (a, b) => a.dDay - b.dDay,
         );
         setExperiments(sortedExperiments);
@@ -107,12 +122,11 @@ export default function Home() {
         ) : (
           <div className="experiment-list">
             {experiments.map((exp) => (
-              // ✨ Link 태그를 div(혹은 button)로 바꾸고 onClick 핸들러로 제어합니다.
               <div
                 key={exp.experimentId}
                 onClick={() => handleCardClick(exp)}
                 className={`experiment-card ${exp.dDay === 0 ? "highlight" : ""}`}
-                style={{ cursor: "pointer" }} // 클릭 가능하게 마우스 커서 변경
+                style={{ cursor: "pointer" }}
               >
                 <div className="card-info">
                   <h3 className="experiment-title">
@@ -131,11 +145,7 @@ export default function Home() {
                 </div>
 
                 <span className="experiment-dday">
-                  {exp.dDay === 0
-                    ? "D-Day"
-                    : exp.dDay < 0
-                      ? `D+${Math.abs(exp.dDay)}`
-                      : `D-${exp.dDay}`}
+                  {exp.dDay === 0 ? "D-Day" : `D-${exp.dDay}`}
                 </span>
               </div>
             ))}
