@@ -13,33 +13,21 @@ function Archive() {
     navigate("/");
   };
 
+  const handleCardClick = (experimentId) => {
+    navigate(`/experimentreport/${experimentId}`);
+  };
+
   useEffect(() => {
     const fetchArchive = async () => {
-      // 🔍 1단계: 이 함수가 실행되긴 하는지 확인
-      console.log("1. fetchArchive 함수가 정상적으로 시작됨!");
-
       try {
         const response = await axios.get("/experiments/archive", {
           withCredentials: true,
         });
 
-        // 🔍 2단계: 서버 응답이 들어왔는지 확인
-        console.log("2. 서버 응답 성공적으로 도착함! 데이터:", response.data);
-
         if (response.data?.success?.experiments) {
           setData(response.data.success.experiments);
         }
       } catch (error) {
-        // 🔍 3단계: 만약 에러가 났다면 catch문에서 범인을 잡음
-        console.log("3. 🔴 catch 블록으로 튕김! 에러 정체는 아래와 같음:");
-        console.error(error); // 👈 이 에러 객체의 내용을 정확히 봐야 합니다.
-
-        // 혹시 서버가 준 에러 응답 내용이 있는지 확인
-        if (error.response) {
-          console.log("서버가 뱉은 에러 응답 body:", error.response.data);
-          console.log("서버가 뱉은 에러 상태 코드:", error.response.status);
-        }
-
         setData([]);
       }
     };
@@ -69,7 +57,12 @@ function Archive() {
         ) : (
           <div className="archive-items-container">
             {data.map((experiment) => (
-              <div key={experiment.experimentId} className="archive-item">
+              <div
+                key={experiment.experimentId}
+                className="archive-item"
+                onClick={() => handleCardClick(experiment.experimentId)}
+                style={{ cursor: "pointer" }}
+              >
                 <div className="item-info">
                   <span className="item-title">{experiment.title}</span>
                   <span className="item-date">

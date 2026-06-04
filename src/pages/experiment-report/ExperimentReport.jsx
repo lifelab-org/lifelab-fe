@@ -1,37 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import Api from "../../api/Api";
 import "./ExperimentReport.css";
-
-const IconRight = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#000"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={{ flexShrink: 0 }}
-  >
-    <polyline points="9 18 15 12 9 6"></polyline>
-  </svg>
-);
-
-const IconDown = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#000"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={{ flexShrink: 0 }}
-  >
-    <polyline points="6 9 12 15 18 9"></polyline>
-  </svg>
-);
+import vectorImage from "../../assets/Vector.png";
 
 const IconCheck = () => (
   <svg
@@ -48,154 +19,6 @@ const IconCheck = () => (
   </svg>
 );
 
-const ExperimentReport = () => {
-  // 여러 개가 동시에 열릴 수 있도록 상태를 객체로 관리
-  const [openSections, setOpenSections] = useState({
-    attendance: false,
-    metrics: false,
-    biggest: false,
-    ai: false,
-  });
-
-  // 클릭한 섹션의 현재 상태만 반전시킴
-  const toggleSection = (section) => {
-    setOpenSections((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
-  };
-
-  return (
-    <div className="report-wrapper">
-      <div className="report-container">
-        {/* 상단 타이틀 영역 */}
-        <div className="top-header">
-          <div className="title-left">
-            <h1 className="main-title">밀가루 끊기</h1>
-            <p className="date-text">25.12.20 ~ 25.12.27</p>
-          </div>
-          <div className="title-right">
-            <div className="check-icon">
-              <IconCheck />
-            </div>
-            <div className="score-text">89%</div>
-          </div>
-        </div>
-
-        <div className="sub-title">실험 레포트</div>
-        <hr className="divider-line" />
-
-        {/* 4개의 토글 리스트 */}
-        <div className="toggle-list">
-          {/* 1. 나의 실험 출석률 */}
-          <div className="toggle-item">
-            <div
-              className="toggle-header"
-              onClick={() => toggleSection("attendance")}
-            >
-              <div className="toggle-header-left">
-                {openSections.attendance ? <IconDown /> : <IconRight />}
-                <span className="toggle-text">나의 실험 출석률</span>
-              </div>
-              {openSections.attendance && (
-                <span className="toggle-value">80%</span>
-              )}
-            </div>
-          </div>
-
-          {/* 2. 지표 별 변화량 */}
-          <div className="toggle-item">
-            <div
-              className="toggle-header"
-              onClick={() => toggleSection("metrics")}
-            >
-              <div className="toggle-header-left">
-                {openSections.metrics ? <IconDown /> : <IconRight />}
-                <span className="toggle-text">지표 별 변화량</span>
-              </div>
-            </div>
-            {openSections.metrics && (
-              <div className="toggle-content">
-                <div className="graph-link-box">
-                  <span className="graph-link">그래프로 확인하기</span>
-                </div>
-                <div className="metrics-list">
-                  <MetricRow
-                    label="소화 상태"
-                    from="5"
-                    to="4.1"
-                    diff="0.9↑"
-                    active
-                  />
-                  <MetricRow
-                    label="피부 상태"
-                    from="4"
-                    to="5.1"
-                    diff="1.1↑"
-                    active
-                  />
-                  <MetricRow
-                    label="피로도"
-                    from="10"
-                    to="5.1"
-                    diff="1.1↑"
-                    active
-                  />
-                  <MetricRow label="기분" from="4" to="4" diff="--" />
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* 3. 가장 변화 폭이 컸던 지표 */}
-          <div className="toggle-item">
-            <div
-              className="toggle-header"
-              onClick={() => toggleSection("biggest")}
-            >
-              <div className="toggle-header-left">
-                {openSections.biggest ? <IconDown /> : <IconRight />}
-                <span className="toggle-text">가장 변화 폭이 컸던 지표</span>
-              </div>
-            </div>
-            {openSections.biggest && (
-              <div className="toggle-content">
-                <div className="biggest-change-label">피부 상태</div>
-                <div className="biggest-change-cards">
-                  <div className="card gray-card">
-                    <span className="card-num">3</span>
-                    <span className="card-desc">실험 전</span>
-                  </div>
-                  <span className="card-arrow">→</span>
-                  <div className="card purple-card">
-                    <span className="card-num">7</span>
-                    <span className="card-desc">12.27</span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* 4. AI 코멘트 */}
-          <div className="toggle-item">
-            <div className="toggle-header" onClick={() => toggleSection("ai")}>
-              <div className="toggle-header-left">
-                {openSections.ai ? <IconDown /> : <IconRight />}
-                <span className="toggle-text">AI 코멘트</span>
-              </div>
-            </div>
-            {openSections.ai && (
-              <div className="toggle-content">
-                <div className="ai-box"></div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const MetricRow = ({ label, from, to, diff, active }) => (
   <div className="metric-row">
     <div className="m-label">{label}</div>
@@ -210,5 +33,257 @@ const MetricRow = ({ label, from, to, diff, active }) => (
     </div>
   </div>
 );
+
+const ExperimentReport = () => {
+  const { experimentId } = useParams();
+  const navigate = useNavigate();
+
+  const [reportData, setReportData] = useState({
+    successInfo: null,
+    attendanceRate: 0,
+    metricsList: [],
+    topMetric: null,
+    aiComment: "",
+  });
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  // ✨ 토글 열림/닫힘 상태를 관리하는 State
+  const [openSections, setOpenSections] = useState({
+    attendance: false,
+    metrics: false,
+    biggest: false,
+    ai: false,
+  });
+
+  useEffect(() => {
+    const fetchReportData = async () => {
+      try {
+        setIsLoading(true);
+
+        const [
+          successRes,
+          attendanceRes,
+          metricsRes,
+          topMetricRes,
+          commentRes,
+        ] = await Promise.all([
+          Api.get(`/experiments/${experimentId}/success`),
+          Api.get(`/experiments/${experimentId}/attendance`),
+          Api.get(`/experiments/${experimentId}/archive/metrics`),
+          Api.get(`/experiments/${experimentId}/archive/metrics/top`),
+          Api.get(`/experiments/${experimentId}/comment`),
+        ]);
+
+        const experimentInfo =
+          successRes.data?.success?.experiments?.find(
+            (exp) => String(exp.experimentId) === String(experimentId),
+          ) || successRes.data?.success?.experiments?.[0];
+
+        setReportData({
+          successInfo: experimentInfo || null,
+          attendanceRate: attendanceRes.data?.success?.attendanceRate || 0,
+          metricsList: metricsRes.data?.success?.metrics || [],
+          topMetric: topMetricRes.data?.success || null,
+          aiComment:
+            commentRes.data?.success?.comment || "분석된 코멘트가 없습니다.",
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (experimentId) {
+      fetchReportData();
+    }
+  }, [experimentId]);
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "";
+    return dateStr.replace(/^\d{2}(\d{2})-(\d{2})-(\d{2})$/, "$1.$2.$3");
+  };
+
+  // ✨ 토글 클릭 시 상태를 반전시키는 함수
+  const toggleSection = (section) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
+
+  const { successInfo, attendanceRate, metricsList, topMetric, aiComment } =
+    reportData;
+
+  if (isLoading) {
+    return (
+      <div style={{ padding: "50px", textAlign: "center", color: "#666" }}>
+        AI 리포트 분석 및 로딩 중...
+      </div>
+    );
+  }
+
+  return (
+    <div className="report-wrapper">
+      <div className="report-container">
+        <div className="top-header">
+          <div className="title-left">
+            <h1 className="main-title">
+              {successInfo?.title || "실험 레포트"}
+            </h1>
+            <p className="date-text">
+              {formatDate(successInfo?.startDate)} ~{" "}
+              {formatDate(successInfo?.endDate)}
+            </p>
+          </div>
+          <div className="title-right">
+            <div className="check-icon">
+              <IconCheck />
+            </div>
+            <div className="score-text">{successInfo?.successRate ?? 0}%</div>
+          </div>
+        </div>
+
+        <div className="sub-title">실험 레포트</div>
+        <hr className="divider-line" />
+
+        <div className="toggle-list">
+          {/* 1. 나의 실험 출석률 */}
+          <div className="toggle-item">
+            <div
+              className="toggle-header"
+              onClick={() => toggleSection("attendance")}
+            >
+              <div className="toggle-header-left">
+                <img src={vectorImage} alt="화살표" className="vector-icon" />
+                <span className="toggle-text">나의 실험 출석률</span>
+              </div>
+              {openSections.attendance && (
+                <span className="toggle-value">{attendanceRate}%</span>
+              )}
+            </div>
+          </div>
+
+          {/* 2. 지표 별 변화량 */}
+          <div className="toggle-item">
+            <div
+              className="toggle-header"
+              onClick={() => toggleSection("metrics")}
+            >
+              <div className="toggle-header-left">
+                <img src={vectorImage} alt="화살표" className="vector-icon" />
+                <span className="toggle-text">지표 별 변화량</span>
+              </div>
+              {openSections.metrics && (
+                <span
+                  className="graph-link"
+                  onClick={(e) => {
+                    e.stopPropagation(); // 부모(토글) 클릭 이벤트 방지
+                    navigate(`/graph/${experimentId}`);
+                  }}
+                >
+                  그래프로 확인하기
+                </span>
+              )}
+            </div>
+            {openSections.metrics && (
+              <div className="toggle-content">
+                <div className="metrics-list">
+                  {metricsList.map((metric, idx) => (
+                    <MetricRow
+                      key={idx}
+                      label={metric.name}
+                      from={metric.previousValue}
+                      to={metric.currentValue}
+                      diff={`${metric.delta}${metric.direction === "UP" ? "↑" : "↓"}`}
+                      active={metric.delta > 0}
+                    />
+                  ))}
+                  {metricsList.length === 0 && (
+                    <div
+                      style={{
+                        padding: "15px",
+                        color: "#999",
+                        fontSize: "14px",
+                      }}
+                    >
+                      조회된 지표가 없습니다.
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* 3. 가장 변화 폭이 컸던 지표 */}
+          <div className="toggle-item">
+            <div
+              className="toggle-header"
+              onClick={() => toggleSection("biggest")}
+            >
+              <div className="toggle-header-left">
+                <img src={vectorImage} alt="화살표" className="vector-icon" />
+                <span className="toggle-text">가장 변화 폭이 컸던 지표</span>
+              </div>
+            </div>
+            {openSections.biggest && (
+              <div className="toggle-content">
+                {topMetric ? (
+                  <>
+                    <div className="biggest-change-label">
+                      {topMetric.recordItemKey}
+                    </div>
+                    <div className="biggest-change-cards">
+                      <div className="card-column">
+                        <div className="card-box">{topMetric.preValue}</div>
+                        <span className="card-desc">실험 전</span>
+                      </div>
+                      <span className="card-arrow">→</span>
+                      <div className="card-column">
+                        <div className="card-box purple-box">
+                          {topMetric.valueAtMaxChange}
+                        </div>
+                        <span className="card-desc">
+                          {formatDate(topMetric.recordDate)?.slice(3)}
+                        </span>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div
+                    style={{ padding: "15px", color: "#999", fontSize: "14px" }}
+                  >
+                    데이터가 충분하지 않습니다.
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* 4. AI 코멘트 */}
+          <div className="toggle-item">
+            <div className="toggle-header" onClick={() => toggleSection("ai")}>
+              <div className="toggle-header-left">
+                <img src={vectorImage} alt="화살표" className="vector-icon" />
+                <span className="toggle-text">AI 코멘트</span>
+              </div>
+            </div>
+            {openSections.ai && (
+              <div className="toggle-content">
+                <div className="ai-box">{aiComment}</div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div
+          className="button-container"
+          style={{ marginTop: "40px", padding: "0 20px 20px" }}
+        ></div>
+      </div>
+    </div>
+  );
+};
 
 export default ExperimentReport;
