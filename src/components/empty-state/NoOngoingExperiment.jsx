@@ -1,29 +1,12 @@
 import "./NoOngoingExperiment.css";
 import logo from "../../assets/lifelab_logo.png";
-import Api from "../../api/Api";
+import { useNavigate } from "react-router-dom";
 
-function NoOngoingExperiment({ onCreated }) {
-  const handleCreateExperiment = async () => {
-    try {
-      const response = await Api.post("/experiments", {
-        title: "카페인 줄이기 실험",
-        startDate: "2026-06-01",
-        endDate: "2026-06-28",
-        rule: "오후 2시 이후 카페인 금지",
-        recordItems: [
-          { name: "피로도" },
-          { name: "집중력" },
-          { name: "수면만족도" },
-          { name: "카페 섭취 여부" },
-        ],
-      });
+function NoOngoingExperiment() {
+  const navigate = useNavigate();
 
-      if (response.status === 200 || response.status === 201) {
-        if (onCreated) onCreated();
-      }
-    } catch (error) {
-      console.error("실험 생성 실패:", error);
-    }
+  const handleCreateExperimentClick = () => {
+    navigate("/createExperiment");
   };
 
   return (
@@ -34,11 +17,7 @@ function NoOngoingExperiment({ onCreated }) {
       <button
         type="button"
         className="making-experiments"
-        onMouseDown={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          handleCreateExperiment();
-        }}
+        onClick={handleCreateExperimentClick} // 👈 4. 함수 연결
       >
         실험 생성
       </button>
