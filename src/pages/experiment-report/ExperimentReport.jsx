@@ -4,7 +4,6 @@ import Api from "../../api/Api";
 import "./ExperimentReport.css";
 import vectorImage from "../../assets/Vector.png";
 
-// ✨ 완료/실패 이미지 import
 import okImage from "../../assets/ok.png"; // 완료 시 체크 이미지
 import xImage from "../../assets/X.png"; // 실패 시 X 이미지
 
