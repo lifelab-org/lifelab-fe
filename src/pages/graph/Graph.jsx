@@ -11,21 +11,8 @@ import {
 } from "recharts";
 import Api from "../../api/Api";
 import "./Graph.css";
-
-const IconCheck = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#000"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <polyline points="20 6 9 17 4 12"></polyline>
-  </svg>
-);
+import okImage from "../../assets/ok.png";
+import xImage from "../../assets/X.png";
 
 const IconBack = () => (
   <svg
@@ -49,7 +36,7 @@ const Graph = () => {
   const navigate = useNavigate();
 
   const [headerInfo, setHeaderInfo] = useState(null);
-  const [graphData, setGraphData] = useState([]);
+  const [graphData, setGraphData] = useState([]); // 지표별 날짜별 데이터 저장 배열
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -57,32 +44,25 @@ const Graph = () => {
       try {
         setIsLoading(true);
 
-        // 1. 상단 타이틀 및 성공률 표기를 위한 성공 데이터 호출
-        const successRes = await Api.get(
-          `/experiments/${experimentId}/success`,
-        );
+        const [successRes, metricsGraphRes] = await Promise.all([
+          Api.get(`/experiments/${experimentId}/success`).catch(() => null),
+          Api.get(`/experiments/${experimentId}/archive/metrics/graph`).catch(
+            () => null,
+          ),
+        ]);
+
+        const experimentsArray = successRes?.data?.success?.experiments || [];
         const experimentInfo =
-          successRes.data?.success?.experiments?.find(
+          experimentsArray.find(
             (exp) => String(exp.experimentId) === String(experimentId),
-          ) || successRes.data?.success?.experiments?.[0];
+          ) ||
+          experimentsArray[0] ||
+          null;
 
-        setHeaderInfo(experimentInfo || null);
+        setHeaderInfo(experimentInfo);
 
-        // 2. 그래프 시각화용 지표 목록 데이터 호출 후 차트 포맷으로 변환
-        const metricsRes = await Api.get(
-          `/experiments/${experimentId}/archive/metrics`,
-        );
-        const originMetrics = metricsRes.data?.success?.metrics || [];
-
-        // Recharts 맞춤형 차트 데이터 배열 가공 (ex: [{ name: "지표명", value: 현재값 }])
-        const formattedData = originMetrics.map((metric) => ({
-          name: metric.name,
-          "이전 값": metric.previousValue,
-          "현재 값": metric.currentValue,
-          변화량: metric.delta,
-        }));
-
-        setGraphData(formattedData);
+        const originMetrics = metricsGraphRes?.data?.success?.metrics || [];
+        setGraphData(originMetrics);
       } catch (error) {
         console.error("그래프 페이지 데이터를 가져오는 중 오류 발생:", error);
       } finally {
@@ -95,7 +75,7 @@ const Graph = () => {
     }
   }, [experimentId]);
 
-  // 날짜 포맷팅용 함수 (2025-12-20 -> 25.12.20)
+  // 상단 타이틀 날짜 포맷팅용
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
     return dateStr.replace(/^\d{2}(\d{2})-(\d{2})-(\d{2})$/, "$1.$2.$3");
@@ -109,6 +89,8 @@ const Graph = () => {
     );
   }
 
+  const isExperimentSuccess = headerInfo?.isSuccess !== false;
+
   return (
     <div className="report-wrapper">
       <div className="report-container">
@@ -117,52 +99,106 @@ const Graph = () => {
           <IconBack />
         </div>
 
-        {/* 상단 타이틀 영역 (지정 형식을 고수하여 컴포넌트 일치) */}
+        {/* 상단 타이틀 영역 */}
         <div className="top-header">
           <div className="title-left">
-            <h1 className="main-title">{headerInfo?.title || "밀가루 끊기"}</h1>
+            <h1 className="main-title">{headerInfo?.title || "실험 레포트"}</h1>
             <p className="date-text">
-              {formatDate(headerInfo?.startDate) || "25.12.20"} ~{" "}
-              {formatDate(headerInfo?.endDate) || "25.12.27"}
+              {formatDate(headerInfo?.startDate)} ~{" "}
+              {formatDate(headerInfo?.endDate)}
             </p>
           </div>
           <div className="title-right">
-            <div className="check-icon-wrapper">
-              <IconCheck />
+            <div className="check-icon">
+              {isExperimentSuccess ? (
+                <img src={okImage} alt="완료" className="status-img" />
+              ) : (
+                <img src={xImage} alt="실패" className="status-img" />
+              )}
             </div>
-            <div className="score-text">{headerInfo?.successRate ?? 89}%</div>
+            <div className="score-text">{headerInfo?.successRate ?? 0}%</div>
           </div>
         </div>
 
         <div className="sub-title">실험 레포트</div>
         <hr className="divider-line" />
 
-        {/* 피그마 시안의 연보라 대형 차트 영역 박스 */}
-        <div className="chart-large-box">
+        {/*  각 지표가 '=날짜별타임라인 흐름에 맞춰 독립된 꺾은선으로 렌더링되는 영역 */}
+        <div
+          className="chart-large-box"
+          style={{
+            overflowY: "auto",
+            display: "flex",
+            flexDirection: "column",
+            gap: "32px",
+          }}
+        >
           {graphData.length > 0 ? (
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={graphData}
-                margin={{ top: 25, right: 20, left: -20, bottom: 10 }}
+            graphData.map((metric, idx) => (
+              <div
+                key={idx}
+                className="metric-chart-item"
+                style={{ width: "100%" }}
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0eefc" />
-                <XAxis
-                  dataKey="name"
-                  stroke="#a0a0a0"
-                  tick={{ fontSize: 11 }}
-                />
-                <YAxis stroke="#a0a0a0" tick={{ fontSize: 11 }} />
-                <Tooltip />
-                {/* 시안 브랜딩 컬러에 최적화된 연보라 굵은 꺾은선 배치 */}
-                <Line
-                  type="monotone"
-                  dataKey="현재 값"
-                  stroke="#9d8df1"
-                  strokeWidth={3}
-                  activeDot={{ r: 6 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+                {/* 지표명 (피로도, 소화 상태 등) */}
+                <div
+                  className="metric-chart-title"
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    marginBottom: "8px",
+                    color: "#333",
+                  }}
+                >
+                  {metric.name}
+                </div>
+
+                {/* 날짜별로 쪼개지는 개별 차트 컨테이너 */}
+                <div style={{ width: "100%", height: "140px" }}>
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart
+                      data={metric.points || []}
+                      margin={{ top: 10, right: 15, left: -35, bottom: 5 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f0eefc" />
+                      <XAxis
+                        dataKey="date"
+                        stroke="#a0a0a0"
+                        tickFormatter={(date) => {
+                          if (!date) return "";
+
+                          const parts = date.split("-");
+                          return parts.length >= 3
+                            ? `${parseInt(parts[1], 10)}.${parseInt(parts[2], 10)}`
+                            : date;
+                        }}
+                        tick={{ fontSize: 10 }}
+                      />
+                      <YAxis
+                        stroke="#a0a0a0"
+                        tick={{ fontSize: 10 }}
+                        domain={["auto", "auto"]}
+                      />
+
+                      <Tooltip
+                        formatter={(value) => [`${value}점`, "기록"]}
+                        labelFormatter={(date) => `날짜: ${date}`}
+                      />
+
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        name="점수"
+                        stroke="#9d8df1"
+                        strokeWidth={2.5}
+                        dot={{ r: 4 }}
+                        activeDot={{ r: 6 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            ))
           ) : (
             <div className="empty-chart-text">
               시각화할 변화량 지표가 존재하지 않습니다.
