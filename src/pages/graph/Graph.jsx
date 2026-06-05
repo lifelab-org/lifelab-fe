@@ -36,7 +36,7 @@ const Graph = () => {
   const navigate = useNavigate();
 
   const [headerInfo, setHeaderInfo] = useState(null);
-  const [graphData, setGraphData] = useState([]); // 지표별 날짜별 데이터 저장 배열
+  const [graphData, setGraphData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -75,7 +75,6 @@ const Graph = () => {
     }
   }, [experimentId]);
 
-  // 상단 타이틀 날짜 포맷팅용
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
     return dateStr.replace(/^\d{2}(\d{2})-(\d{2})-(\d{2})$/, "$1.$2.$3");
@@ -123,7 +122,7 @@ const Graph = () => {
         <div className="sub-title">실험 레포트</div>
         <hr className="divider-line" />
 
-        {/*  각 지표가 '=날짜별타임라인 흐름에 맞춰 독립된 꺾은선으로 렌더링되는 영역 */}
+        {/* 각 지표가 날짜별 타임라인 흐름에 맞춰 독립된 꺾은선으로 렌더링되는 영역 */}
         <div
           className="chart-large-box"
           style={{
@@ -158,12 +157,15 @@ const Graph = () => {
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart
                       data={metric.points || []}
-                      margin={{ top: 10, right: 15, left: -35, bottom: 5 }}
+                      /* 🛠️ 좌측 마진을 확보(-35 -> 10)하여 Y축 수치와 첫 번째 점이 깎이지 않도록 패딩 보완 */
+                      margin={{ top: 10, right: 15, left: 10, bottom: 5 }}
                     >
                       <CartesianGrid strokeDasharray="3 3" stroke="#f0eefc" />
                       <XAxis
                         dataKey="date"
                         stroke="#a0a0a0"
+                        /* 🛠️ padding 옵션을 추가하여 양 끝단(6.5, 6.17)의 둥근 마커가 컨테이너 밖으로 잘리지 않게 방지 */
+                        padding={{ left: 15, right: 15 }}
                         tickFormatter={(date) => {
                           if (!date) return "";
 
