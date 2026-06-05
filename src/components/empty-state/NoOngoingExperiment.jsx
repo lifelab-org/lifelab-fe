@@ -17,7 +17,7 @@ function NoOngoingExperiment() {
       <button
         type="button"
         className="making-experiments"
-        onClick={handleCreateExperimentClick} // 👈 4. 함수 연결
+        onClick={handleCreateExperimentClick} 
       >
         실험 생성
       </button>

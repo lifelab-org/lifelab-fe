@@ -4,20 +4,9 @@ import Api from "../../api/Api";
 import "./ExperimentReport.css";
 import vectorImage from "../../assets/Vector.png";
 
-const IconCheck = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#000"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <polyline points="20 6 9 17 4 12"></polyline>
-  </svg>
-);
+// ✨ 완료/실패 이미지 import
+import okImage from "../../assets/ok.png"; // 완료 시 체크 이미지
+import xImage from "../../assets/X.png"; // 실패 시 X 이미지
 
 const MetricRow = ({ label, from, to, diff, active }) => (
   <div className="metric-row">
@@ -48,7 +37,6 @@ const ExperimentReport = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  // ✨ 토글 열림/닫힘 상태를 관리하는 State
   const [openSections, setOpenSections] = useState({
     attendance: false,
     metrics: false,
@@ -61,6 +49,7 @@ const ExperimentReport = () => {
       try {
         setIsLoading(true);
 
+        // 특정 API가 에러를 뱉어도 전체가 깨지지 않도록 개별 .catch() 처리 (데이터 보장)
         const [
           successRes,
           attendanceRes,
@@ -68,28 +57,35 @@ const ExperimentReport = () => {
           topMetricRes,
           commentRes,
         ] = await Promise.all([
-          Api.get(`/experiments/${experimentId}/success`),
-          Api.get(`/experiments/${experimentId}/attendance`),
-          Api.get(`/experiments/${experimentId}/archive/metrics`),
-          Api.get(`/experiments/${experimentId}/archive/metrics/top`),
-          Api.get(`/experiments/${experimentId}/comment`),
+          Api.get(`/experiments/${experimentId}/success`).catch(() => null),
+          Api.get(`/experiments/${experimentId}/attendance`).catch(() => null),
+          Api.get(`/experiments/${experimentId}/archive/metrics`).catch(
+            () => null,
+          ),
+          Api.get(`/experiments/${experimentId}/archive/metrics/top`).catch(
+            () => null,
+          ),
+          Api.get(`/experiments/${experimentId}/comment`).catch(() => null),
         ]);
 
+        const experimentsArray = successRes?.data?.success?.experiments || [];
         const experimentInfo =
-          successRes.data?.success?.experiments?.find(
+          experimentsArray.find(
             (exp) => String(exp.experimentId) === String(experimentId),
-          ) || successRes.data?.success?.experiments?.[0];
+          ) ||
+          experimentsArray[0] ||
+          null;
 
         setReportData({
-          successInfo: experimentInfo || null,
-          attendanceRate: attendanceRes.data?.success?.attendanceRate || 0,
-          metricsList: metricsRes.data?.success?.metrics || [],
-          topMetric: topMetricRes.data?.success || null,
+          successInfo: experimentInfo,
+          attendanceRate: attendanceRes?.data?.success?.attendanceRate ?? 0,
+          metricsList: metricsRes?.data?.success?.metrics || [],
+          topMetric: topMetricRes?.data?.success || null,
           aiComment:
-            commentRes.data?.success?.comment || "분석된 코멘트가 없습니다.",
+            commentRes?.data?.success?.comment || "분석된 코멘트가 없습니다.",
         });
       } catch (error) {
-        console.error(error);
+        console.error("Critical Error:", error);
       } finally {
         setIsLoading(false);
       }
@@ -105,7 +101,6 @@ const ExperimentReport = () => {
     return dateStr.replace(/^\d{2}(\d{2})-(\d{2})-(\d{2})$/, "$1.$2.$3");
   };
 
-  // ✨ 토글 클릭 시 상태를 반전시키는 함수
   const toggleSection = (section) => {
     setOpenSections((prev) => ({
       ...prev,
@@ -124,6 +119,9 @@ const ExperimentReport = () => {
     );
   }
 
+  // successInfo가 존재하고, isSuccess가 명확히 false일 때만 실패(X) 처리
+  const isExperimentSuccess = successInfo?.isSuccess !== false;
+
   return (
     <div className="report-wrapper">
       <div className="report-container">
@@ -138,8 +136,13 @@ const ExperimentReport = () => {
             </p>
           </div>
           <div className="title-right">
+            {/* ✨ SVG 대신 이미지 태그 삽입 */}
             <div className="check-icon">
-              <IconCheck />
+              {isExperimentSuccess ? (
+                <img src={okImage} alt="완료" className="status-img" />
+              ) : (
+                <img src={xImage} alt="실패" className="status-img" />
+              )}
             </div>
             <div className="score-text">{successInfo?.successRate ?? 0}%</div>
           </div>
@@ -179,7 +182,7 @@ const ExperimentReport = () => {
                 <span
                   className="graph-link"
                   onClick={(e) => {
-                    e.stopPropagation(); // 부모(토글) 클릭 이벤트 방지
+                    e.stopPropagation();
                     navigate(`/graph/${experimentId}`);
                   }}
                 >
