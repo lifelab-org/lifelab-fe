@@ -15,7 +15,6 @@ export default function Home() {
     navigate("/createExperiment");
   };
 
-  // 카드 클릭 시 결과 확인 API를 거치고 이동하는 핸들러
   const handleCardClick = async (exp) => {
     // 1. 실험 전 상태가 기록되지 않은 실험이면 prerecord 페이지로 최우선 이동
     if (!exp.preStateRecorded) {
