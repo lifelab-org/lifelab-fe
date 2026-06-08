@@ -16,44 +16,52 @@ export default function Home() {
   };
 
   const handleCardClick = async (exp) => {
-    // 1. 실험 전 상태가 기록되지 않은 실험이면 prerecord 페이지로 최우선 이동
+    // ==========================================
+    // [🔥 최우선 순위 수정] 완료된 실험 분기
+    // dDay가 음수(< 0)여서 화면에 D+로 표시되는 카드라면,
+    // 사전 기록 여부와 상관없이 무조건 1등으로 리포트 처리 로직을 태웁니다!
+    // ==========================================
+    if (exp.dDay < 0) {
+      try {
+        await Api.post(`/experiments/${exp.experimentId}/result-check`);
+        console.log(`${exp.experimentId}번 실험 결과 확인 완료`);
+
+        // 클릭해서 완료 처리된 카드는 화면에서 없앰
+        setExperiments((prev) =>
+          prev.filter((item) => item.experimentId !== exp.experimentId),
+        );
+
+        // 🎯 튕기지 않고 정상적으로 리포트 페이지로 정상 이동!!
+        navigate(`/experimentreport/${exp.experimentId}`);
+      } catch (error) {
+        console.error("결과 확인 API 에러:", error);
+
+        if (error.response && error.response.status === 401) {
+          navigate("/onboarding", { replace: true });
+          return;
+        }
+
+        // 이미 처리되었거나 에러가 나도 리포트로 안전하게 이동시키고 카드 제외
+        setExperiments((prev) =>
+          prev.filter((item) => item.experimentId !== exp.experimentId),
+        );
+        navigate(`/experimentreport/${exp.experimentId}`);
+      }
+      return; // 완료된 실험은 이 단계에서 라우팅이 끝나므로 완전히 리턴 종료!
+    }
+
+    // ==========================================
+    // 여기서부터는 아직 기간이 남은 '진행 중인 실험(dDay >= 0)'들만 들어옵니다.
+    // ==========================================
+
+    // 2. 실험 전 상태가 기록되지 않은 실험이면 prerecord 페이지로 이동
     if (!exp.preStateRecorded) {
       navigate(`/prerecord/${exp.experimentId}`);
       return;
     }
 
-    // 2. D-Day가 남아있는 경우(D-1 이상) 바로 상세 페이지로 이동
-    if (exp.dDay > 0) {
-      navigate(`/experimentdetail/${exp.experimentId}`);
-      return;
-    }
-
-    // 3. D-Day가 0 이하로 끝난 경우 결과 확인 API 호출 및 리포트 이동
-    try {
-      await Api.post(`/experiments/${exp.experimentId}/result-check`);
-      console.log(`${exp.experimentId}번 실험 결과 확인 완료`);
-
-      // 클릭해서 완료 처리된 카드는 화면에서 없앰
-      setExperiments((prev) =>
-        prev.filter((item) => item.experimentId !== exp.experimentId),
-      );
-
-      // 성공 시 리포트 페이지로 감
-      navigate(`/experimentreport/${exp.experimentId}`);
-    } catch (error) {
-      console.error("결과 확인 API 에러:", error);
-
-      if (error.response && error.response.status === 401) {
-        navigate("/onboarding", { replace: true });
-        return;
-      }
-
-      // 이미 처리되었거나 에러가 나도 리포트로 안전하게 이동시키고 카드 제외
-      setExperiments((prev) =>
-        prev.filter((item) => item.experimentId !== exp.experimentId),
-      );
-      navigate(`/experimentreport/${exp.experimentId}`);
-    }
+    // 3. dDay가 0 이상이면서 사전 기록도 끝난 실험 -> 상세 페이지로 이동
+    navigate(`/experimentdetail/${exp.experimentId}`);
   };
 
   useEffect(() => {
@@ -72,11 +80,8 @@ export default function Home() {
           rawExperiments = successData;
         }
 
-        // 이미 날짜가 지난(음수) 실험은 진입 시점에 원천 차단하여 카드가 뜨지 않게 함
-        const ongoingOnly = rawExperiments.filter((exp) => exp.dDay >= 0);
-
-        // 오름차순 정렬
-        const sortedExperiments = [...ongoingOnly].sort(
+        // 백엔드 요청 반영: 날짜 지난 실험도 원천 차단하지 않고 다 가져옴
+        const sortedExperiments = [...rawExperiments].sort(
           (a, b) => a.dDay - b.dDay,
         );
         setExperiments(sortedExperiments);
@@ -136,15 +141,21 @@ export default function Home() {
                     {exp.title}
                   </h3>
 
+                  {/* dDay가 음수(완료)일 때만 완료 문구 노출 */}
                   <p className="experiment-subtitle">
-                    {exp.dDay <= 0
+                    {exp.dDay < 0
                       ? "실험이 완료되었어요! 결과를 확인해보세요"
                       : exp.subtitle}
                   </p>
                 </div>
 
+                {/* 디데이 표시 부호 수정 (-를 +로 변환) */}
                 <span className="experiment-dday">
-                  {exp.dDay === 0 ? "D-Day" : `D-${exp.dDay}`}
+                  {exp.dDay === 0
+                    ? "D-Day"
+                    : exp.dDay < 0
+                      ? `D+${Math.abs(exp.dDay)}`
+                      : `D-${exp.dDay}`}
                 </span>
               </div>
             ))}
