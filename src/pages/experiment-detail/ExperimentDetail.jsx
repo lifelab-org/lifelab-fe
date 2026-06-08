@@ -24,6 +24,7 @@ function ExperimentDetail() {
 
   useEffect(() => {
     const fetchDetail = async () => {
+      // 1. 실험 상세 데이터 조회 (독립적인 try-catch)
       try {
         const res = await Api.get(`/experiments/${experimentId}`);
 
@@ -32,9 +33,29 @@ function ExperimentDetail() {
         }
       } catch (error) {
         console.error("상세 데이터 조회 실패:", error);
+      }
+
+      // ==========================================
+      // 2. [수정] AI 한줄 요약 조회 API 연결 (독립 실행)
+      // ==========================================
+      try {
+        const aiRes = await Api.get(
+          `/experiments/${experimentId}/daily-summary`,
+        );
+        if (aiRes.data?.success?.summary) {
+          setExperiment((prev) =>
+            prev
+              ? { ...prev, aiSummary: aiRes.data.success.summary }
+              : { aiSummary: aiRes.data.success.summary },
+          );
+        }
+      } catch (aiError) {
+        console.error("AI 한줄 요약 조회 실패:", aiError);
       } finally {
+        // 두 요청 시도가 모두 끝난 후 로딩 상태 해제
         setIsLoading(false);
       }
+      // ==========================================
     };
 
     if (experimentId) {
