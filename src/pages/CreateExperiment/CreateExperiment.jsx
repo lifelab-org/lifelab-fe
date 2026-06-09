@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import './CreateExperiment.css';
 import { Calendar, Minus, Plus, ArrowLeft } from 'lucide-react';
 import DatePicker from 'react-datepicker'; // 달력 라이브러리
-import "react-datepicker/dist/react-datepicker.css"; // 달력 기본 스타일; css에서 수정해서 덮어씌울 것
+import "react-datepicker/dist/react-datepicker.css"; // 달력 기본 스타일
 import BottomNav from '../../components/BottomNav';
+import { useNavigate } from 'react-router-dom';
+import api from '../../api/Api';
 
 const CreateExperiment = () => {
     const [startDate, updateStartDate] = useState(null);
@@ -11,11 +13,16 @@ const CreateExperiment = () => {
     const [items, setItems] = useState(['피로도', '집중력', '기분', '소화상태', '수면만족도']);
     const [title, setTitle] = useState('');
     const [rule, setRule] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const isReady = title.trim().length && rule.trim().length > 0 && startDate && endDate && items.length > 0;
     const addItem = () => {
       setItems([...items, '']);
     }
     const removeItem = (index) => {
+      if (items.length === 1) {
+          setIsModalOpen(true);
+          return;
+      }
       const newItems = items.filter((_,i) => i !== index);
       setItems(newItems);
     }
@@ -29,28 +36,31 @@ const CreateExperiment = () => {
       return date.toLocaleDateString('sv-SE'); // yyyy-mm-dd (UTC 기준 말고 로컬기준으로 함)
     };
 
+    const navigate = useNavigate();
+
+    const goBackClick = () => {
+      navigate(-1);
+    }
+
     const handleCreate = async () => {
   try {
-    const response = await fetch('https://life-lab.shop/api/experiments', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({
+    const payload = {
         title,
         startDate: formatDate(startDate),
         endDate: formatDate(endDate),
         rule,
         recordItems: items.map(item => ({ name: item }))
-      })
-    });
+      }
 
-    const data = await response.json();
-    console.log(data);
+    const response = await api.post(`/experiments`, payload);
+    const data = response.data;
 
-    if (response.status === 201) {
+    console.log("서버 응답 데이터: ", data);
+
+    if (response.status === 201 || response.status === 200) {
       alert('실험 생성 성공!');
+      const newExperimentId = data.success.experimentId;
+      navigate('/created', { state: { experimentId: newExperimentId } });
     } else {
       alert(data?.error?.message || '에러 발생');
     }
@@ -65,7 +75,7 @@ const CreateExperiment = () => {
         <div className="experiment-container">
             {/* 헤더 */}
             <header className="experiment-header">
-                <ArrowLeft className="back-icon" />
+                <ArrowLeft className="back-icon" onClick={goBackClick} />
                 <h2 className="header-title">실험 생성</h2>
             </header>
 
@@ -123,7 +133,7 @@ const CreateExperiment = () => {
                         ))}
                         <div className="add-chip">
                           <button className="chip-plus-icon" onClick={addItem}><Plus /></button>
-                          <span classname="add-placeholder">항목추가</span>
+                          <span className="add-placeholder">항목추가</span>
                         </div>
                     </div>
                 </div>
@@ -138,6 +148,17 @@ const CreateExperiment = () => {
             <nav className="bottom-nav">
               <BottomNav />
             </nav>
+
+            {isModalOpen && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3>기록 항목은 최소 하나예요!</h3>
+                          <button className="ok-button" onClick={() => setIsModalOpen(false)}>
+                              확인
+                          </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

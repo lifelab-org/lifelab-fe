@@ -12,7 +12,8 @@
   background-color: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 16px;
-  z-index: 100;
+  /* ✨ z-index를 엄청 높여서 다른 투명한 레이어들이 절대 못 덮게 만듦 */
+  z-index: 9999;
 }
 
 .modal-logo {
@@ -27,7 +28,13 @@
   background-color: #7f6edb;
   color: white;
   font-size: 14px;
+  /* ✨ 버튼 위에 마우스 올렸을 때 손가락 모양으로 바뀌게 설정 */
+  cursor: pointer;
+  /* 혹시 모를 레이어 간섭 방지 */
+  position: relative;
+  z-index: 10000;
 }
+
 .experiment-state {
   font-size: 16px;
   margin-top: 14px;

@@ -6,7 +6,6 @@
 /* main 영역 */
 .home-main {
   position: relative;
-  min-height: 400px;
 }
 
 /* empty 상태 중앙 정렬 */
@@ -19,33 +18,80 @@
   padding: 24px;
 }
 
-/* 리스트 */
+/* 1. 리스트 컨테이너 (.upcoming-list 규격과 100% 일치) */
 .experiment-list {
-  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
+  padding: 0 20px;
+  max-width: 420px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* 카드 */
+/* 2. 실험 카드 디자인 (.upcoming-list > div 규격과 100% 일치) */
 .experiment-card {
-  display: block;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative; /* 디데이 우측 고정을 위한 기준점 */
+  background-color: #ffffff;
+  border: 1px solid #9c8ceb;
+  border-radius: 12px;
   padding: 20px;
-  background-color: white;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  text-decoration: none;
+  min-height: 90px;
+  box-sizing: border-box;
+  text-decoration: none; /* Link 태그 기본 밑줄 제거 */
 }
 
-/* 강조 카드 */
+/* 3. D-Day 당일인 카드 하이라이트 (.upcoming-list > div:first-child 규격과 일치) */
 .experiment-card.highlight {
-  background-color: rgba(99, 102, 241, 0.05);
-  border: 1px solid #c7d2fe;
+  background-color: #f0efff;
+  border-color: #d1cffe;
 }
 
-/* 제목 */
+/* 4. 타이틀 스타일 (.upcoming-list h3 규격과 100% 일치) */
 .experiment-title {
   font-size: 18px;
   font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 6px 0; /* 아래쪽 6px 마진 완벽 일치 */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 🎯 [수정] ::before를 지우고 실제 div 태그에 매핑될 동그라미 스타일 지정 */
+.color-circle {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  flex-shrink: 0; /* 텍스트 길어져도 동그라미가 찌그러지지 않도록 방지 */
+}
+
+/* 5. 서브타이틀 스타일 (.upcoming-list p 규격과 100% 일치) */
+.experiment-subtitle {
+  font-size: 13px;
+  color: #9c9c9c;
+  margin: 0;
+}
+
+/* 6. 우측 D-Day 레이블 (.upcoming-list span 규격과 100% 일치) */
+.experiment-dday {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  font-weight: 700;
+  color: #9c8ceb;
+}
+
+.experiment-card:active {
+  background-color: #ede9ff;
+  border-color: #b9b5f9;
+  transform: scale(0.98);
+  transition: all 0.1s ease;
 }

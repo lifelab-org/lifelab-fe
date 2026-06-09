@@ -1,40 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Archive.css";
 import { useNavigate } from "react-router-dom";
-//import axios from "axios";
+import axios from "../../api/Api";
+import okImage from "../../assets/ok.png";
+import xImage from "../../assets/X.png";
 
 function Archive() {
   const navigate = useNavigate();
-  // 더미 데이터
-  //   const dummyData = [
-  //     { id: 1, title: "운동 습관 만들기", date: "2026-03-01" },
-  //     { id: 2, title: "아침 기상 루틴", date: "2026-03-05" },
-  //   ];
-
   const [data, setData] = useState([]);
+
   const handleStart = () => {
     navigate("/");
   };
 
-  /*
+  const handleCardClick = (experimentId) => {
+    navigate(`/experimentreport/${experimentId}`);
+  };
+
   useEffect(() => {
     const fetchArchive = async () => {
       try {
-        //URL들어가는 부분
-        const response = await axios.get("/api/experiments/archive");
+        const response = await axios.get("/experiments/archive", {
+          withCredentials: true,
+        });
 
-        // 콘솔찍어서 테스트 부분
-        console.log(response.data);
-
-        // 응답
-        setData(response.data);
+        if (response.data?.success?.experiments) {
+          setData(response.data.success.experiments);
+        }
       } catch (error) {
-        console.error("아카이브 조회 실패:", error);
+        setData([]);
       }
     };
 
     fetchArchive();
-  }, []); */
+  }, []);
 
   return (
     <div>
@@ -43,17 +42,45 @@ function Archive() {
         실험내역
         <hr className="line" />
       </div>
+
       <div className="experiments-state">
-        {data.length === 0 && (
+        {data.length === 0 ? (
           <div className="empty-wrapper">
             <div className="empty">
               아직 완료된 실험이 없어요!
               <br />첫 실험을 시작해 보세요
             </div>
-
             <div className="home-navigate" onClick={handleStart}>
               홈으로 이동하기
             </div>
+          </div>
+        ) : (
+          <div className="archive-items-container">
+            {data.map((experiment) => (
+              <div
+                key={experiment.experimentId}
+                className="archive-item"
+                onClick={() => handleCardClick(experiment.experimentId)}
+                style={{ cursor: "pointer" }}
+              >
+                <div className="item-info">
+                  <span className="item-title">{experiment.title}</span>
+                  <span className="item-date">
+                    {experiment.startDate} ~ {experiment.endDate}
+                  </span>
+                </div>
+
+                <div
+                  className={`item-status ${experiment.isSuccess ? "success" : "fail"}`}
+                >
+                  <img
+                    src={experiment.isSuccess ? okImage : xImage}
+                    alt={experiment.isSuccess ? "성공" : "실패"}
+                    className="status-icon"
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>

@@ -1,5 +1,5 @@
 import "./DeleteCompleteModal.css";
-import Check from "../../assets/check.png";
+import CheckGray from "../../assets/check_gray.png";
 
 function DeleteCompleteModal({ isOpen, onHome }) {
   if (!isOpen) return null;
@@ -7,7 +7,7 @@ function DeleteCompleteModal({ isOpen, onHome }) {
   return (
     <div className="modal-overlay">
       <div className="complete-box">
-        <img src={Check} className="check-icon" alt="완료 아이콘" />
+        <img src={CheckGray} className="check-icon" alt="완료 아이콘" />
         <div className="complete-title">삭제 완료!</div>
         <button className="home-btn" onClick={onHome}>
           홈으로

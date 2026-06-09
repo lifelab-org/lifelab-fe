@@ -17,7 +17,7 @@ body {
 .title {
   font-size: 20px;
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-top: 4px;
 }
 
 .value {
@@ -47,9 +47,8 @@ body {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  margin-top: auto;
   color: white;
-
+  margin-bottom: 20px;
   line-height: 53px;
 }
 
